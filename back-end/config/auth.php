@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Doctor;
+use App\Models\Patient;
+
 return [
 
     /*
@@ -44,6 +47,16 @@ return [
             'driver' => 'jwt',
             'provider' => 'users',
         ],
+        'doctor' => [
+            'driver' => 'session',
+            'provider' => 'doctors',
+        ],
+
+        'patient' => [
+            'driver' => 'session',
+            'provider' => 'patients',
+        ],
+
     ],
 
     /*
@@ -67,6 +80,15 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'doctors' => [
+            'driver' => 'eloquent',
+            'model' => Doctor::class,
+        ],
+
+        'patients' => [
+            'driver' => 'eloquent',
+            'model' => Patient::class,
         ],
 
         // 'users' => [
