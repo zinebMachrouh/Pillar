@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('picture',255);
             $table->string('password',255);
             $table->integer('phone_number');
             $table->foreignId('role_id')->constrained();
