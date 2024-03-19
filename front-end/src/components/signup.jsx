@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 import axios from 'axios';
 
 const SignUp = () => {
@@ -27,9 +28,9 @@ const SignUp = () => {
 
     return (
         <div id="signup-body">
-            <a href="#" className="back">
+            <Link to='/' className="back">
                 <i className="fa-solid fa-arrow-left"></i>
-            </a>
+            </Link>
             <div className="form-container">
                 <h2 className="title">P<img src="/logo.png" alt="logo" style={{ width: '12px' }} />llar</h2>
                 <form className="form" method="POST" onSubmit={handleRegistrationSubmit} >
@@ -81,7 +82,7 @@ const SignUp = () => {
                     </a>
                 </div>
                 <p className="signup">Already registered?
-                    <a href="#">Log In</a>
+                    <Link to='/login'>Log In</Link>
                 </p>
             </div>
         </div>
