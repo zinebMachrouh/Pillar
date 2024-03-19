@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import './App.css'
-import Login from './components/login';
+import SignUp from './components/signup';
 
 const App = () => {
   return (  
-    <Login/>
+    <SignUp/>
   );
 }
 
