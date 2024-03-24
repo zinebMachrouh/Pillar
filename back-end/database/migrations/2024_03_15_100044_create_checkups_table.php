@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('checkups', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->constrained();
-            $table->foreignId('doctor_id')->constrained();
+            $table->foreignId('patient_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('doctor_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->longText('symptoms');
             $table->longText('diagnosis');
             $table->longText('treatment_plan');
             $table->dateTime('follow_up_date');
             $table->longText('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

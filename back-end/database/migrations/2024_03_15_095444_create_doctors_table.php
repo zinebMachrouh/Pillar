@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
             $table->string('gender');
-            $table->date('birthday');
             $table->string('address')->nullable();
             $table->string('speciality');
             $table->string('qualifications')->nullable();
@@ -25,8 +24,9 @@ return new class extends Migration
             $table->string('working_hours');
             $table->integer('appointment_fee');
             $table->longText('about')->nullable();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

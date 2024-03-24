@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Patient extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'gender',
@@ -41,5 +42,9 @@ class Patient extends Model
     public function meds()
     {
         return $this->hasMany(Med::class);
+    }
+    public function doctors()
+    {
+        return $this->belongsToMany(Doctor::class, 'doctor_patient');
     }
 }

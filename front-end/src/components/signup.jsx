@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const SignUp = () => {
@@ -9,6 +10,14 @@ const SignUp = () => {
         password: '',
         phone_number: ''
     });
+    
+    const navigate = useNavigate();
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            navigate('/'+localStorage.getItem('redirect'));
+        }
+    }, [navigate]);
 
     const handleInputChange = (e) => {
         setRegisterData({ ...registerData, [e.target.name]: e.target.value });
@@ -22,7 +31,11 @@ const SignUp = () => {
                 'X-CSRF-TOKEN': csrfToken
             }
         });
+        const token  = response.data.authorisation.token;
         const redirect = response.data.redirect;
+        localStorage.setItem('token', token);
+        localStorage.setItem('redirect', redirect);
+
         window.location.href = `/${redirect}`;
     };
 

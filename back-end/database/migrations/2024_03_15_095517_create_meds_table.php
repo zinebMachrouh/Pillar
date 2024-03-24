@@ -17,10 +17,12 @@ return new class extends Migration
             $table->string('dosage');
             $table->string('frequency');
             $table->date('prescription_date');
-            $table->foreignId('patient_id')->constrained();
-            $table->foreignId('doctor_id')->constrained();
+            $table->foreignId('patient_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('doctor_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->longText('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

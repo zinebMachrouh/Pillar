@@ -23,8 +23,10 @@ return new class extends Migration
             $table->date('last_visit');
             $table->longText('medical_history');
             $table->longText('allergies');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

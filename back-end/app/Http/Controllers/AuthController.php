@@ -57,7 +57,6 @@ class AuthController extends Controller
         ]);
 
         $token = Auth::login($user);
-        $redirect = $user->role->name === 'doctor' ? 'doctor/patients' : 'admin/dahsboard';
 
         return response()->json([
             'status' => 'success',
@@ -67,7 +66,7 @@ class AuthController extends Controller
                 'token' => $token,
                 'type' => 'bearer',
             ],
-            'redirect' => $redirect
+            'redirect' => 'doctor/create'
         ]);
     }
 
