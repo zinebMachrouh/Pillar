@@ -6,6 +6,7 @@ import Login from './components/login';
 import Welcome from './components/welcome';
 import DoctorCreate from './components/doctor/create';
 import DoctorIndex from './components/doctor';
+import PatientCreate from './components/patient/create';
 
 const App = () => {
   return ( 
@@ -14,7 +15,8 @@ const App = () => {
       <Route path='/signup' element={<SignUp/>} />
       <Route path='/login' element={<Login/>} />
       <Route path='/doctor/create' element={<DoctorCreate/>} />
-      <Route path='/doctor/patients' element={<DoctorIndex/>} />
+      <Route path='/doctor/patients' element={<DoctorIndex />} />
+      <Route path='/patient/create' element={<PatientCreate/>} />
     </Routes>
   );
 }

@@ -29,12 +29,10 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::get('/patients', [PatientController::class, 'index']);
-Route::middleware('auth', 'role:doctor')->prefix('api')->group(function () {
-    Route::post('/doctors/create', [DoctorController::class, 'store']);
-    Route::post('/patient/store', [PatientController::class, 'store']);
-    Route::get('/patients/{id}', [PatientController::class, 'show']);
-    Route::post('/medications/{patientId}', [MedController::class, 'store']);
-    Route::put('/medications/{id}', [MedController::class, 'update']);
-    Route::delete('/medications/{id}', [MedController::class, 'destroy']);
-    Route::post('/patients/search', [PatientController::class, 'search']);
-});
+Route::post('/doctors/create', [DoctorController::class, 'store']);
+Route::post('/patient/store', [PatientController::class, 'store']);
+Route::get('/patients/{id}', [PatientController::class, 'show']);
+Route::post('/medications/{patientId}', [MedController::class, 'store']);
+Route::put('/medications/{id}', [MedController::class, 'update']);
+Route::delete('/medications/{id}', [MedController::class, 'destroy']);
+Route::post('/patients/search', [PatientController::class, 'search']);

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const DoctorCreate = () => {
+const PatientCreate = () => {
     const [formData, setFormData] = useState({
         gender: '',
         address: '',
@@ -29,7 +29,7 @@ const DoctorCreate = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = sessionStorage.getItem('token');
-        
+
         const response = await axios.post('http://127.0.0.1:8000/api/doctors/create', formData, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -42,8 +42,8 @@ const DoctorCreate = () => {
     return (
         <div id="login-body">
             <div className="form-container">
-                <h2 className="title" style={{ color:'#3498DB'}}>Complete Profile</h2>
-                <form onSubmit={handleSubmit} className="doctor-create" style={{marginTop: '15px'}}>
+                <h2 className="title" style={{ color: '#3498DB' }}>Complete Profile</h2>
+                <form onSubmit={handleSubmit} className="doctor-create" style={{ marginTop: '15px' }}>
                     <div className="group">
                         <div className="input-group">
                             <label htmlFor="gender">Gender</label>
@@ -101,4 +101,4 @@ const DoctorCreate = () => {
     );
 }
 
-export default DoctorCreate;
+export default PatientCreate;

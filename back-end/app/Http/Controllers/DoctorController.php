@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class DoctorController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     public function store(DoctorStoreRequest $request)
     {
         $user = User::find(Auth::user()->id);

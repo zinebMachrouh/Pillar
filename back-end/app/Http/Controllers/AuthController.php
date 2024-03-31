@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-
+    public function __construct()
+    {
+        // $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
@@ -51,7 +54,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
             'phone_number' => $request->phone_number,
             'role_id' => 2,
         ]);

@@ -2,19 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
+use App\Models\Checkup;
 use App\Models\User;
 use App\Models\Patient;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+use function Laravel\Prompts\error;
+
 class PatientController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api');
+    // }
     public function index()
     {
-        $doctor = Auth::user()->doctor;
-        $patients = $doctor->patients()->orderBy('created_at')->get();
-        return response()->json(['patients' => $patients]);
+        try {
+            $user = Auth::user();
+            $doctor = $user->doctor;
+            $patients = $doctor->patients()->orderBy('created_at')->get();
+            $statistics = [
+                'Patients' => $doctor->patients()->count(),
+                'Appoinments' => Appointment::where('doctor_id', $doctor->id)->count(),
+                'Checkups' => Checkup::where('doctor_id', $doctor->id)->count()
+            ];
+            return response()->json(['patients' => $patients, 'user' => $user, 'statistics'=> $statistics]);
+
+        } catch (Exception $error) {
+            return response()->json(["error"=>$error->getMessage()]);
+        }
     }
     public function store(Request $request)
     {

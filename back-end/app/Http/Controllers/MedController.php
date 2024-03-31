@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class MedController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     public function store(MedStoreRequest $request, $patientId)
     {
         $data = $request->validated();

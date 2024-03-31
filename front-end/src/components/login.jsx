@@ -8,13 +8,15 @@ const Login = () => {
         email: '',
         password: ''
     });
+
     const navigate = useNavigate();
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         if (token) {
-            navigate('/'+localStorage.getItem('redirect'));
+            navigate('/' + sessionStorage.getItem('redirect'));
         }
     }, [navigate]);
+
     const handleInputChange = (e) => {
         setLoginData({ ...loginData, [e.target.name]: e.target.value });
     };
@@ -30,8 +32,8 @@ const Login = () => {
         const token = response.data.authorisation.token;
 
         const redirect = response.data.redirect;
-        localStorage.setItem('token', token);
-        localStorage.setItem('redirect', redirect);
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('redirect', redirect);
 
         navigate(`/${redirect}`);
 
