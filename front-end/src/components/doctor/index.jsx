@@ -101,16 +101,16 @@ const DoctorIndex = () => {
                                     {patient.gender === 'male' ? (
                                         <div className="card-top">
                                             <i className="fa-solid fa-mars" style={{ color: "#3498DB" }} ></i>
-                                            <h4>{patient.name}</h4>
+                                            <h4>{patient.user.name}</h4>
                                         </div>
                                     ) : (
                                         <div className="card-top">
                                             <i className="fa-solid fa-venus" style={{ color: "#ec4ba9" }} ></i>
-                                            <h4>{patient.name}</h4>
+                                            <h4>{patient.user.name}</h4>
                                         </div>
                                     )}
                                     <div className="card-body">
-                                        <span>{patient.email}</span>
+                                        <span>{patient.user.email}</span>
                                         <h4>Contact Information</h4>
                                         <ul>
                                             <li><strong>Number:</strong> {patient.user.phone_number}</li>

@@ -24,7 +24,7 @@ class PatientController extends Controller
         try {
             $user = Auth::user();
             $doctor = $user->doctor;
-            $patients = $doctor->patients()->orderBy('created_at')->get();
+            $patients = $doctor->patients()->orderBy('created_at')->with('user')->get();
             $statistics = [
                 'Patients' => $doctor->patients()->count(),
                 'Appoinments' => Appointment::where('doctor_id', $doctor->id)->count(),
@@ -64,7 +64,7 @@ class PatientController extends Controller
             'role_id' => 3
         ]);
 
-        $patient = Patient::create([
+        $patient = $user->patient()->create([
             'user_id' => $user->id,
             'gender' => $request->gender,
             'birthday' => $request->birthday,
