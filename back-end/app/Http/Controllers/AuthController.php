@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
     public function login(LoginRequest $request)
     {
@@ -31,7 +32,6 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'user' => $user,
             'authorisation' => [
                 'token' => $token,
                 'type' => 'bearer',
@@ -40,31 +40,25 @@ class AuthController extends Controller
         ]);
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $rules = [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6'],
-            'phone_number' => ['required', 'numeric'],
-        ];
 
-        $request->validate($rules);
+        $validatedData = $request->validated();
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone_number' => $request->phone_number,
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']), // Hash the password
+            'phone_number' => $validatedData['phone_number'],
             'role_id' => 2,
         ]);
+
 
         $token = Auth::login($user);
 
         return response()->json([
             'status' => 'success',
             'message' => 'User created successfully',
-            'user' => $user,
             'authorisation' => [
                 'token' => $token,
                 'type' => 'bearer',
@@ -79,6 +73,18 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Successfully logged out',
+        ]);
+    }
+
+    public function refresh()
+    {
+        return response()->json([
+            'status' => 'success',
+            'user' => Auth::user(),
+            'authorisation' => [
+                'token' => Auth::refresh(),
+                'type' => 'bearer',
+            ]
         ]);
     }
 }

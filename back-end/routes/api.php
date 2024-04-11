@@ -2,10 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\MedController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\CheckupController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\AppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,11 +31,31 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::get('/patients', [PatientController::class, 'index']);
+Route::post('/refresh', [AuthController::class, 'refresh']);
+
 Route::post('/doctors/create', [DoctorController::class, 'store']);
+
+Route::get('/patients', [PatientController::class, 'index']);
 Route::post('/patient/store', [PatientController::class, 'store']);
 Route::get('/patients/{id}', [PatientController::class, 'show']);
+Route::post('/patients/search', [PatientController::class, 'search']);
+
 Route::post('/medications/{patientId}', [MedController::class, 'store']);
 Route::put('/medications/{id}', [MedController::class, 'update']);
 Route::delete('/medications/{id}', [MedController::class, 'destroy']);
-Route::post('/patients/search', [PatientController::class, 'search']);
+Route::get('/patients/{patientId}/meds', [MedController::class, 'getMeds']);
+
+Route::post('/appointments', [AppointmentController::class, 'create']);
+Route::get('/appointments/{id}', [AppointmentController::class, 'find']);
+Route::put('/appointments/{id}', [AppointmentController::class, 'update']);
+Route::delete('/appointments/{id}', [AppointmentController::class, 'delete']);
+Route::get('/appointments/upcoming', [AppointmentController::class, 'getUpcomingAppointments']);
+
+Route::post('/checkups', [CheckupController::class, 'createCheckup']);
+Route::put('/checkups/{id}', [CheckupController::class, 'updateCheckup']);
+Route::delete('/checkups/{id}', [CheckupController::class, 'deleteCheckup']);
+Route::get('/checkups/appointment/{appointmentId}', [CheckupController::class, 'findCheckupByAppointment']);
+
+Route::get('/banpatient/{patient_id}', [AdminController::class, 'banPatient']);
+Route::get('/bandoctor/{doctor_id}', [AdminController::class, 'banDoctor']);
+Route::get('/viewstatistics', [AdminController::class, 'viewStatistics']);

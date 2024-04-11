@@ -2,7 +2,7 @@
 
 namespace App\DTO;
 
-class DoctorDTO
+class DoctorDTO extends UserDTO
 {
     public $gender;
     public $birthday;
@@ -18,8 +18,10 @@ class DoctorDTO
     public $about;
     public $user_id;
 
-    public function __construct($gender, $birthday, $address, $speciality, $qualifications, $license_Number, $hospital_affiliation, $experience, $availability, $working_hours, $appointment_fee, $about, $user_id)
+    public function __construct($name, $email, $password, $phone_number, $roleId, $gender, $birthday, $address, $speciality, $qualifications, $license_Number, $hospital_affiliation, $experience, $availability, $working_hours, $appointment_fee, $about, $user_id)
     {
+        parent::__construct($name, $email, $password, $phone_number, $roleId);
+
         $this->gender = $gender;
         $this->birthday = $birthday;
         $this->address = $address;
@@ -38,6 +40,11 @@ class DoctorDTO
     public static function fromRequest(array $data)
     {
         return new self(
+            $data['name'],
+            $data['email'],
+            $data['password'],
+            $data['phone_number'],
+            $data['role_id'],
             $data['gender'],
             $data['birthday'],
             $data['address'],
@@ -56,7 +63,8 @@ class DoctorDTO
 
     public function toArray()
     {
-        return [
+        $parentArray = parent::toArray();
+        return array_merge($parentArray,[
             'gender' => $this->gender,
             'birthday' => $this->birthday,
             'address' => $this->address,
@@ -70,6 +78,6 @@ class DoctorDTO
             'appointment_fee' => $this->appointment_fee,
             'about' => $this->about,
             'user_id' => $this->user_id,
-        ];
+        ]);
     }
 }

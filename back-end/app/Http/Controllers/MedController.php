@@ -2,42 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\MedStoreRequest;
-use App\Models\Med;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\DTO\MedDTO;
+use App\Services\MedServiceInterface;
+use Illuminate\Http\JsonResponse;
 
 class MedController extends Controller
 {
-    public function __construct()
+    protected $medService;
+
+    public function __construct(MedServiceInterface $medService)
     {
         $this->middleware('auth:api');
-    }
-    public function store(MedStoreRequest $request, $patientId)
-    {
-        $data = $request->validated();
-        $data['patient_id'] = $patientId;
-        $data['doctor_id'] = Auth::user()->doctor->id;
-
-        $med = Med::create($data);
-
-        return response()->json(['status' => 'success', 'message' => 'Medication created successfully', 'medication' => $med], 201);
+        $this->medService = $medService;
     }
 
-    public function update(MedStoreRequest $request, $id)
+    public function store(MedDTO $dto, $patientId): JsonResponse
     {
-        $med = Med::findOrFail($id);
-        $data = $request->validated();
-        $med->update($data);
+        $medication = $this->medService->createMedication($dto, $patientId);
 
-        return response()->json(['status' => 'success', 'message' => 'Medication updated successfully', 'medication' => $med]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Medication created successfully',
+            'medication' => $medication
+        ], 201);
     }
 
-    public function destroy($id)
+    public function update(MedDTO $dto, $id): JsonResponse
     {
-        $med = Med::findOrFail($id);
-        $med->delete();
+        $this->medService->updateMedication($dto, $id);
 
-        return response()->json(['status' => 'success', 'message' => 'Medication deleted successfully']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Medication updated successfully'
+        ]);
+    }
+
+    public function destroy($id): JsonResponse
+    {
+        $this->medService->deleteMedication($id);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Medication deleted successfully'
+        ]);
+    }
+
+    public function getMeds($patientId): JsonResponse
+    {
+        $medications = $this->medService->getMedsByPatient($patientId);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $medications
+        ]);
     }
 }

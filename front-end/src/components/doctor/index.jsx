@@ -1,32 +1,35 @@
 import { useState, useEffect } from "react";
 import { useNavigate, NavLink, Link } from 'react-router-dom';
 import axios from 'axios';
+import Patient from "./patient";
+import Appointment from "./appointment";
+import Aside from "./layout/aside";
 
 const DoctorIndex = () => {
-    const [patients, setPatients] = useState([]);
-    const [stats, setStats] = useState({});
-    const [user, setUser] = useState({});
+    const navigate = useNavigate();
     const token = sessionStorage.getItem('token');
 
-    const navigate = useNavigate();
-    useEffect(() => {
-        window.history.pushState(null, null, window.location.href);
-        window.onpopstate = function (event) {
-            window.history.go(1);
-        };
-    }, []);
-    const getPatients = async () => {
+    const [state, setState] = useState({
+        patients: [],
+        appointments : [],
+        stats: {},
+        user: {},
+        searchTerm: ''
+    });
 
+    const fetchData = async () => {
         try {
             const response = await axios.get('http://127.0.0.1:8000/api/patients', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }
             });
-            setPatients([...response.data.patients])
-            setUser(response.data.user);
-            setStats(response.data.statistics)
-            console.log(response)
+            setState({
+                patients: [...response.data.patients],
+                user: response.data.user,
+                stats: response.data.statistics,
+                appointments: [...response.data.appointments]
+            });
         } catch (error) {
             if (error.response && error.response.status === 500) {
                 navigate('/login');
@@ -34,23 +37,67 @@ const DoctorIndex = () => {
                 console.error('Error fetching patients:', error);
             }
         }
-    }
+    };
+
+    const handleSearch = async () => {
+        if (state.searchTerm.trim() === '') {
+            fetchData();
+        } else {
+            try {
+                const response = await axios.post('http://127.0.0.1:8000/api/patients/search', {
+                    query: state.searchTerm
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });                setState(prevState => ({
+                    ...prevState,
+                    patients: response.data.patients
+                }));
+            } catch (error) {
+                console.error('Error searching patients:', error);
+            }
+        }
+    };
+
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            try {
+                const response = await axios.post('http://127.0.0.1:8000/api/refresh', {}, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+                const newToken = response.data.authorisation.token;
+                sessionStorage.setItem('token', newToken);
+            } catch (error) {
+                console.error('Error refreshing token:', error);
+            }
+        }, 1800000);
+
+        return () => clearInterval(interval);
+    }, [state.searchTerm]); 
+
+    useEffect(() => {
+        handleSearch()
+    },[state.searchTerm])
+
+    useEffect(() => {
+        fetchData();
+    },[])
+
+    useEffect(() => {
+        window.history.pushState(null, null, window.location.href);
+        window.onpopstate = function (event) {
+            window.history.go(1);
+        };
+    }, [navigate]);
 
     const handleLogout = async () => {
-        // await axios.post('http://127.0.0.1:8000/api/logout');
         sessionStorage.clear();
-        navigate('/login')
-        console.log()
+        navigate('/login');
     }
 
-    useEffect(() => {
-        getPatients()
-        console.log(patients)
-    }, []);
-
-    useEffect(() => {
-
-    }, [token]);
     return (
         <div className="dashboard">
             <div className="sidebar">
@@ -71,14 +118,15 @@ const DoctorIndex = () => {
                 <div className="main">
                     <div className="header">
                         <div className="text">
-                            <h4>Hi {user.name},</h4>
+                            <h4>Hi {state.user.name},</h4>
                             <h2>Welcome Back!</h2>
                         </div>
                         <div className="actions">
-                            <Link to='/patient/create' className="create"><i class="fa-solid fa-plus"></i></Link>
+                            <Link to='/patient/create' className="create"><i className="fa-solid fa-plus"></i></Link>
                             <div className="search">
-                                <input type="text" name="search" id="search" placeholder="Search..." />
-                                <button type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                <input type="text" name="search" id="search" placeholder="Search Patients..." value={state.searchTerm}
+                                    onChange={(e) => setState(prevState => ({ ...prevState, searchTerm: e.target.value }))} />
+                                <button type="button"><i className="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </div>
                     </div>
@@ -86,7 +134,7 @@ const DoctorIndex = () => {
                     <div className="statistics">
                         <h2>My Patients</h2>
                         <div className="stats">
-                            {Object.entries(stats).map(([key, value], index) => (
+                            {Object.entries(state.stats).map(([key, value], index) => (
                                 <div className="stat" key={index}>
                                     <h4>{value}</h4>
                                     <span>{key}</span>
@@ -95,42 +143,17 @@ const DoctorIndex = () => {
                         </div>
                     </div>
                     <div className="patients">
-                        {
-                            patients.map((patient) => (
-                                <div className="patient">
-                                    {patient.gender === 'male' ? (
-                                        <div className="card-top">
-                                            <i className="fa-solid fa-mars" style={{ color: "#3498DB" }} ></i>
-                                            <h4>{patient.user.name}</h4>
-                                        </div>
-                                    ) : (
-                                        <div className="card-top">
-                                            <i className="fa-solid fa-venus" style={{ color: "#ec4ba9" }} ></i>
-                                            <h4>{patient.user.name}</h4>
-                                        </div>
-                                    )}
-                                    <div className="card-body">
-                                        <span>{patient.user.email}</span>
-                                        <h4>Contact Information</h4>
-                                        <ul>
-                                            <li><strong>Number:</strong> {patient.user.phone_number}</li>
-                                        </ul>
-                                        <h4>Emergency Contact</h4>
-                                        <ul>
-                                            <li><strong>Name:</strong> {patient.emergency_contact_name}</li>
-                                            <li><strong>Number:</strong> {patient.emergency_contact_number}</li>
-                                        </ul>
-                                        <button type="button">View Details</button>
-                                    </div>
-                                </div>
-                            ))
-                        }
+                        {state.patients.length === 0 ? (
+                            <p>No Patients found!</p>
+                        ) : (state.patients.map((patient) => (
+                            <Patient key={patient.id} patient={patient} />
+                        )))}
                     </div>
                 </div>
-                <div className="aside"></div>
+                <Aside appointments={state.appointments} patients={state.patients} />
             </div>
         </div>
     );
 }
 
-export default DoctorIndex;
+export default DoctorIndex; 

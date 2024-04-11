@@ -2,38 +2,46 @@
 
 namespace App\DTO;
 
-class PatientDTO
+use Illuminate\Support\Facades\Hash;
+
+class PatientDTO extends UserDTO
 {
     public $gender;
     public $birthday;
     public $address;
-    public $emergency_contact_name;
-    public $emergency_contact_number;
-    public $insurance_provider;
-    public $insurance_policy_number;
-    public $last_visit;
-    public $medical_history;
+    public $emergencyContactName;
+    public $emergencyContactNumber;
+    public $insuranceProvider;
+    public $insurancePolicyNumber;
+    public $lastVisit;
+    public $medicalHistory;
     public $allergies;
-    public $user_id;
 
-    public function __construct($gender, $birthday, $address, $emergency_contact_name, $emergency_contact_number, $insurance_provider, $insurance_policy_number, $last_visit, $medical_history, $allergies, $user_id)
+    public function __construct($name, $email, $password, $phone_number, $role_id, $gender, $birthday, $address, $emergencyContactName, $emergencyContactNumber, $insuranceProvider, $insurancePolicyNumber, $lastVisit, $medicalHistory, $allergies)
     {
+        parent::__construct($name, $email, $password, $phone_number, $role_id);
+
         $this->gender = $gender;
         $this->birthday = $birthday;
         $this->address = $address;
-        $this->emergency_contact_name = $emergency_contact_name;
-        $this->emergency_contact_number = $emergency_contact_number;
-        $this->insurance_provider = $insurance_provider;
-        $this->insurance_policy_number = $insurance_policy_number;
-        $this->last_visit = $last_visit;
-        $this->medical_history = $medical_history;
+        $this->emergencyContactName = $emergencyContactName;
+        $this->emergencyContactNumber = $emergencyContactNumber;
+        $this->insuranceProvider = $insuranceProvider;
+        $this->insurancePolicyNumber = $insurancePolicyNumber;
+        $this->lastVisit = $lastVisit;
+        $this->medicalHistory = $medicalHistory;
         $this->allergies = $allergies;
-        $this->user_id = $user_id;
     }
 
     public static function fromRequest(array $data)
     {
+        $password = self::generateRandomPassword();
         return new self(
+            $data['name'],
+            $data['email'],
+            $password,
+            $data['phone_number'],
+            3,
             $data['gender'],
             $data['birthday'],
             $data['address'],
@@ -42,26 +50,30 @@ class PatientDTO
             $data['insurance_provider'],
             $data['insurance_policy_number'],
             $data['last_visit'],
-            $data['medical_history'] ?? null,
-            $data['allergies'] ?? null,
-            $data['user_id']
+            $data['medical_history'],
+            $data['allergies']
         );
     }
 
     public function toArray()
     {
-        return [
+        $parentArray = parent::toArray();
+
+        return array_merge($parentArray, [
             'gender' => $this->gender,
             'birthday' => $this->birthday,
             'address' => $this->address,
-            'emergency_contact_name' => $this->emergency_contact_name,
-            'emergency_contact_number' => $this->emergency_contact_number,
-            'insurance_provider' => $this->insurance_provider,
-            'insurance_policy_number' => $this->insurance_policy_number,
-            'last_visit' => $this->last_visit,
-            'medical_history' => $this->medical_history,
+            'emergency_contact_name' => $this->emergencyContactName,
+            'emergency_contact_number' => $this->emergencyContactNumber,
+            'insurance_provider' => $this->insuranceProvider,
+            'insurance_policy_number' => $this->insurancePolicyNumber,
+            'last_visit' => $this->lastVisit,
+            'medical_history' => $this->medicalHistory,
             'allergies' => $this->allergies,
-            'user_id' => $this->user_id,
-        ];
+        ]);
+    }
+    private static function generateRandomPassword()
+    {
+        return Hash::make(random_bytes(10));
     }
 }
