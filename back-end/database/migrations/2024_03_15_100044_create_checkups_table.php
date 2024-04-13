@@ -20,6 +20,7 @@ return new class extends Migration
             $table->longText('treatment_plan');
             $table->dateTime('follow_up_date');
             $table->longText('notes')->nullable();
+            $table->foreignId('appointment_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
             $table->softDeletes();
 

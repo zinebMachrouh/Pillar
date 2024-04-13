@@ -5,11 +5,13 @@ namespace App\Repositories;
 use App\DTO\UserDTO;
 use App\Models\User;
 use App\DTO\PatientDTO;
+use App\Mail\PatientPassword;
 use App\Models\Checkup;
 use App\Models\Patient;
 use App\Models\Appointment;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class PatientRepository implements PatientRepositoryInterface
 {
@@ -17,13 +19,14 @@ class PatientRepository implements PatientRepositoryInterface
 	{
 		$doctor = $user->doctor;
 		$patients = $doctor->patients()->orderBy('created_at')->with('user')->get();
-		$appointments = $doctor->appointments()->latest('updated_at')->with('patient.user')->where('status','!=',0)->get();
+		$appointments = $doctor->appointments()->with('patient.user','checkup')->latest('updated_at')->where('status','!=',0)->get();
+		$checkups = $doctor->checkups()->latest('updated_at')->get();
 		$statistics = [
 			'Patients' => $doctor->patients()->count(),
-			'Appoinments' => $doctor->appointments()->latest('updated_at')->with('patient.user')->where('status', '!=', 0)->count(),
+			'Appoinments' => $doctor->appointments()->where('status', '!=', 0)->count(),
 			'Checkups' => Checkup::where('doctor_id', $doctor->id)->count()
 		];
-		return ['patients' => $patients, 'user' => $user, 'statistics' => $statistics, 'appointments'=> $appointments];
+		return ['patients' => $patients, 'user' => $user, 'statistics' => $statistics, 'appointments'=> $appointments, 'checkups' => $checkups];
 	}
 
 	public function store(PatientDTO $data)
@@ -32,11 +35,11 @@ class PatientRepository implements PatientRepositoryInterface
 		$user = User::create([
 			'name' => $data->name,
 			'email' => $data->email,
-			'password' => $data->password,
+			'password' => $data->password['hashed'],
 			'phone_number' => $data->phone_number,
 			'role_id' => $data->role_id
 		]);
-
+		Mail::to($user->email)->send(new PatientPassword($user->name,$user->email,$data->password['plain']));
 		$patient = $user->patient()->create($data->toArray());
 		$authUser->doctor->patients()->attach($patient->id);
 		return ['status' => 'success', 'message' => 'Patient created successfully', 'patient' => $patient];

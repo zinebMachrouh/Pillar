@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate, NavLink, Link } from 'react-router-dom';
 import axios from 'axios';
 import Patient from "./patient";
-import Appointment from "./appointment";
-import Aside from "./layout/aside";
+import Aside from "./aside";
+import CreateModal from "./createModal";
+import Stats from "./stats";
 
 const DoctorIndex = () => {
     const navigate = useNavigate();
@@ -11,10 +12,12 @@ const DoctorIndex = () => {
 
     const [state, setState] = useState({
         patients: [],
-        appointments : [],
+        appointments: [],
+        checkups: [],
         stats: {},
         user: {},
-        searchTerm: ''
+        searchTerm: '',
+        showModal: false
     });
 
     const fetchData = async () => {
@@ -28,7 +31,8 @@ const DoctorIndex = () => {
                 patients: [...response.data.patients],
                 user: response.data.user,
                 stats: response.data.statistics,
-                appointments: [...response.data.appointments]
+                appointments: [...response.data.appointments],
+                checkups: [...response.data.checkups]
             });
         } catch (error) {
             if (error.response && error.response.status === 500) {
@@ -50,7 +54,7 @@ const DoctorIndex = () => {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     }
-                });                setState(prevState => ({
+                }); setState(prevState => ({
                     ...prevState,
                     patients: response.data.patients
                 }));
@@ -76,15 +80,15 @@ const DoctorIndex = () => {
         }, 1800000);
 
         return () => clearInterval(interval);
-    }, [state.searchTerm]); 
+    }, [state.searchTerm]);
 
     useEffect(() => {
         handleSearch()
-    },[state.searchTerm])
+    }, [state.searchTerm])
 
     useEffect(() => {
         fetchData();
-    },[])
+    }, [])
 
     useEffect(() => {
         window.history.pushState(null, null, window.location.href);
@@ -97,6 +101,20 @@ const DoctorIndex = () => {
         sessionStorage.clear();
         navigate('/login');
     }
+
+    const openModal = () => {
+        setState(prevState => ({
+            ...prevState,
+            showModal: true
+        }));
+    };
+
+    const closeModal = () => {
+        setState(prevState => ({
+            ...prevState,
+            showModal: false
+        }));
+    };
 
     return (
         <div className="dashboard">
@@ -133,14 +151,7 @@ const DoctorIndex = () => {
                     <div className="reminder"></div>
                     <div className="statistics">
                         <h2>My Patients</h2>
-                        <div className="stats">
-                            {Object.entries(state.stats).map(([key, value], index) => (
-                                <div className="stat" key={index}>
-                                    <h4>{value}</h4>
-                                    <span>{key}</span>
-                                </div>
-                            ))}
-                        </div>
+                        <Stats patients={state.patients} appointments={state.appointments} checkups={state.checkups}/>
                     </div>
                     <div className="patients">
                         {state.patients.length === 0 ? (
@@ -150,8 +161,9 @@ const DoctorIndex = () => {
                         )))}
                     </div>
                 </div>
-                <Aside appointments={state.appointments} patients={state.patients} />
+                <Aside appointments={state.appointments} patients={state.patients} openModal={openModal} />
             </div>
+            {state.showModal && <CreateModal patients={state.patients} closeModal={ closeModal} />}
         </div>
     );
 }

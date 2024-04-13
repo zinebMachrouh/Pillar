@@ -1,11 +1,11 @@
-import Appointment from "../appointment";
+import Appointment from "./appointment";
 
-const Aside = ({appointments}) => {
-    return (  
+const Aside = ({ appointments,openModal }) => {
+    return (
         <div className="aside">
             <div className="aside-header">
                 <h2>All Appointments</h2>
-                <button type="button">+</button>
+                <button type="button" onClick={openModal}>+</button>
             </div>
             <div className="appts">
                 {
@@ -28,5 +28,5 @@ const Aside = ({appointments}) => {
         </div>
     );
 }
- 
+
 export default Aside;

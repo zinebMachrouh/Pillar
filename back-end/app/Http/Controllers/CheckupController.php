@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use App\DTO\CheckupDTO;
 use App\Services\CheckupServiceInterface;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckupController extends Controller
 {
@@ -16,8 +18,18 @@ class CheckupController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function createCheckup(CheckupDTO $dto): JsonResponse
+    public function createCheckup(Request $request): JsonResponse
     {
+        $dto = new CheckupDTO(
+            $request->input('patient_id'),
+            Auth::user()->doctor->id,
+            $request->input('symptoms'),
+            $request->input('diagnosis'),
+            $request->input('treatment_plan'),
+            $request->input('follow_up_date'),
+            $request->input('notes'),
+            $request->input('appointment_id'),
+        );
         $checkup = $this->checkupService->createCheckup($dto);
 
         return response()->json([

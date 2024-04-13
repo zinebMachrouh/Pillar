@@ -18,6 +18,7 @@ class Checkup extends Model
         'treatment_plan',
         'follow_up_date',
         'notes',
+        'appointment_id',
     ];
 
     public function patient()
@@ -28,5 +29,9 @@ class Checkup extends Model
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);
+    }
+    public function appointment()
+    {
+        return $this->hasOne(Appointment::class);
     }
 }

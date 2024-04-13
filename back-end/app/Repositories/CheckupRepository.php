@@ -7,7 +7,7 @@ use App\Models\Checkup;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
 
-class EloquentCheckupRepository implements CheckupRepositoryInterface
+class CheckupRepository implements CheckupRepositoryInterface
 {
 	public function create(CheckupDTO $dto): Checkup
 	{

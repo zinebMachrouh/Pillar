@@ -72,8 +72,14 @@ class PatientDTO extends UserDTO
             'allergies' => $this->allergies,
         ]);
     }
+
     private static function generateRandomPassword()
     {
-        return Hash::make(random_bytes(10));
+        $password = rand(10000000, 99999999);
+        return [
+            'hashed' => Hash::make($password),
+            'plain' => $password
+        ];
     }
 }
+

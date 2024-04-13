@@ -11,8 +11,9 @@ class CheckupDTO
     public $treatment_plan;
     public $follow_up_date;
     public $notes;
+    public $appointment_id;
 
-    public function __construct($patient_id, $doctor_id, $symptoms, $diagnosis, $treatment_plan, $follow_up_date, $notes)
+    public function __construct($patient_id, $doctor_id, $symptoms, $diagnosis, $treatment_plan, $follow_up_date, $notes, $appointment_id = null)
     {
         $this->patient_id = $patient_id;
         $this->doctor_id = $doctor_id;
@@ -21,6 +22,7 @@ class CheckupDTO
         $this->treatment_plan = $treatment_plan;
         $this->follow_up_date = $follow_up_date;
         $this->notes = $notes;
+        $this->appointment_id = $appointment_id;
     }
 
     public static function fromRequest(array $data)
@@ -32,7 +34,8 @@ class CheckupDTO
             $data['diagnosis'],
             $data['treatment_plan'],
             $data['follow_up_date'],
-            $data['notes'] ?? null
+            $data['notes'] ?? null,
+            $data['appointment_id'] ?? null
         );
     }
 
@@ -46,6 +49,7 @@ class CheckupDTO
             'treatment_plan' => $this->treatment_plan,
             'follow_up_date' => $this->follow_up_date,
             'notes' => $this->notes,
+            'appointment_id' => $this->appointment_id
         ];
     }
 }

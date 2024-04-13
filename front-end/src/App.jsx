@@ -7,6 +7,7 @@ import Welcome from './components/welcome';
 import DoctorCreate from './components/doctor/create';
 import DoctorIndex from './components/doctor';
 import PatientCreate from './components/patient/create';
+import Checkup from './components/doctor/checkupCreate';
 
 const App = () => {
   return ( 
@@ -17,6 +18,7 @@ const App = () => {
       <Route path='/doctor/create' element={<DoctorCreate/>} />
       <Route path='/doctor/patients' element={<DoctorIndex />} />
       <Route path='/patient/create' element={<PatientCreate/>} />
+      <Route path='/create/checkup' element={<Checkup/>} />
     </Routes>
   );
 }
