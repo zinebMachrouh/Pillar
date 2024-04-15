@@ -33,6 +33,7 @@ const Login = () => {
 
         const redirect = response.data.redirect;
         sessionStorage.setItem('token', token);
+        sessionStorage.setItem('logged', true);
         sessionStorage.setItem('redirect', redirect);
 
         navigate(`/${redirect}`);

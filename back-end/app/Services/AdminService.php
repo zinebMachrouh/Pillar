@@ -14,6 +14,11 @@ class AdminService implements AdminServiceInterface
 		$this->adminRepository = $adminRepository;
 	}
 
+	public function index()
+	{
+		return $this->adminRepository->index();
+	}
+
 	public function banPatient($patientId)
 	{
 		return $this->adminRepository->banPatient($patientId);
@@ -22,6 +27,15 @@ class AdminService implements AdminServiceInterface
 	public function banDoctor($doctorId)
 	{
 		return $this->adminRepository->banDoctor($doctorId);
+	}
+	public function restorePatient($patientId)
+	{
+		return $this->adminRepository->restorePatient($patientId);
+	}
+
+	public function restoreDoctor($doctorId)
+	{
+		return $this->adminRepository->restoreDoctor($doctorId);
 	}
 
 	public function viewStatistics()

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Appointment = ({ appointment }) => {
@@ -10,7 +11,7 @@ const Appointment = ({ appointment }) => {
 
         return `${dayOfWeek} ${month} ${dayOfMonth} - ${time}`;
     };
-
+    console.log(appointment.checkup);
     function getAppointmentStatus() {
         const currentDate = new Date();
         const oneHourAgo = new Date(currentDate.getTime() - 60 * 60 * 1000);
@@ -24,13 +25,17 @@ const Appointment = ({ appointment }) => {
             return { label: "Overdue", className: "cap exp" };
         }
     }
+    const status = getAppointmentStatus();
 
     const navigate = useNavigate();
     const handleNavigate = () => {
-        navigate('/create/checkup', { state: { appointment_id: appointment.id, patient_id: appointment.patient.id, checkup: appointment.checkup } });
+        if (Object.keys(appointment.checkup).length !== 0) {
+            navigate('/create/checkup', { state: { appointment_id: appointment.id, patient_id: appointment.patient.id, checkup: appointment.checkup } });
+        } else {
+            navigate('/create/checkup', { state: { appointment_id: appointment.id, patient_id: appointment.patient.id } });
+        }
     };
 
-    const status = getAppointmentStatus();
     return (
         <div className="appt">
             <div className="appt-side"></div>

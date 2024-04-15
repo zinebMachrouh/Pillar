@@ -136,7 +136,7 @@ const DoctorIndex = () => {
                 <div className="main">
                     <div className="header">
                         <div className="text">
-                            <h4>Hi {state.user.name},</h4>
+                            <h4>Hi Dr. {state.user.name},</h4>
                             <h2>Welcome Back!</h2>
                         </div>
                         <div className="actions">

@@ -19,7 +19,7 @@ class PatientRepository implements PatientRepositoryInterface
 	{
 		$doctor = $user->doctor;
 		$patients = $doctor->patients()->orderBy('created_at')->with('user')->get();
-		$appointments = $doctor->appointments()->with('patient.user','checkup')->latest('updated_at')->where('status','!=',0)->get();
+		$appointments = $doctor->appointments()->with('patient.user', 'checkup')->latest('updated_at')->where('status','!=',0)->get();
 		$checkups = $doctor->checkups()->latest('updated_at')->get();
 		$statistics = [
 			'Patients' => $doctor->patients()->count(),

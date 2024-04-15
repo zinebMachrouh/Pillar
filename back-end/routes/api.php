@@ -56,6 +56,9 @@ Route::put('/checkups/{id}', [CheckupController::class, 'updateCheckup']);
 Route::delete('/checkups/{id}', [CheckupController::class, 'deleteCheckup']);
 Route::get('/checkups/appointment/{appointmentId}', [CheckupController::class, 'findCheckupByAppointment']);
 
-Route::get('/banpatient/{patient_id}', [AdminController::class, 'banPatient']);
-Route::get('/bandoctor/{doctor_id}', [AdminController::class, 'banDoctor']);
+Route::get('/admin/index', [AdminController::class, 'index']);
+Route::delete('/banpatient/{patient_id}', [AdminController::class, 'banPatient']);
+Route::delete('/bandoctor/{doctor_id}', [AdminController::class, 'banDoctor']);
+Route::get('/restorepatient/{patient_id}', [AdminController::class, 'restorePatient']);
+Route::get('/restoredoctor/{doctor_id}', [AdminController::class, 'restoreDoctor']);
 Route::get('/viewstatistics', [AdminController::class, 'viewStatistics']);

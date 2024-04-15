@@ -28,7 +28,17 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        $redirect = $user->role->name === 'doctor' ? 'doctor/patients' : 'admin/dahsboard';
+        $role = $user->role->name;
+
+        if ($role === 'doctor') {
+            $redirect = 'doctor/patients';
+        } elseif ($role === 'admin') {
+            $redirect = 'admin/dashboard';
+        }elseif ($role === 'patient'){
+            $redirect = 'patient/dashboard';
+        } else {
+            $redirect = '404';
+        }
 
         return response()->json([
             'status' => 'success',

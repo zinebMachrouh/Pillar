@@ -14,16 +14,36 @@ class AdminController extends Controller
         $this->adminService = $adminService;
     }
 
-    public function banPatient(Request $request, $patient_id)
+    public function index(){
+        $result = $this->adminService->index();
+
+        return response()->json($result);
+    }
+
+    public function banPatient($patient_id)
     {
         $result = $this->adminService->banPatient($patient_id);
 
         return response()->json($result);
     }
 
-    public function banDoctor(Request $request, $doctor_id)
+    public function banDoctor($doctor_id)
     {
         $result = $this->adminService->banDoctor($doctor_id);
+
+        return response()->json($result);
+    }
+
+    public function restorePatient($patient_id)
+    {
+        $result = $this->adminService->restorePatient($patient_id);
+
+        return response()->json($result);
+    }
+
+    public function restoreDoctor($doctor_id)
+    {
+        $result = $this->adminService->restoreDoctor($doctor_id);
 
         return response()->json($result);
     }

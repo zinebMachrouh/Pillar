@@ -30,6 +30,6 @@ class Appointment extends Model
 
     public function checkup()
     {
-        return $this->belongsTo(Checkup::class);
+        return $this->hasOne(Checkup::class);
     }
 }

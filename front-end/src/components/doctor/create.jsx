@@ -35,6 +35,7 @@ const DoctorCreate = () => {
                 'Authorization': `Bearer ${token}`,
             }
         });
+        sessionStorage.setItem('logged', true);
         window.location.href = `/${response.data.redirect}`;
 
     };
