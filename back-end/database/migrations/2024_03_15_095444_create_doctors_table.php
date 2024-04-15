@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('speciality');
             $table->string('qualifications')->nullable();
-            $table->integer('license_Number')->nullable();
+            $table->integer('license_number')->nullable();
             $table->string('hospital_affiliation');
             $table->integer('experience')->nullable();
             $table->boolean('availability')->default(false);

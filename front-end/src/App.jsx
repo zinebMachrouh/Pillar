@@ -10,12 +10,14 @@ import PatientCreate from './components/patient/create';
 import Checkup from './components/checkup/checkupCreate';
 import Page404 from './components/404';
 import AdminDashboard from './components/admin';
+import { jwtDecode } from 'jwt-decode';
 
 const App = () => {
   const token = sessionStorage.getItem('token');
-  // const decoded = jwt.decode(token);
-
-  // const { role_id} = decoded;
+  if (token) {
+    const decoded = jwtDecode(token);
+    const { role_id } = decoded;
+  }
   return (
     <Routes>
       <Route path='/' element={<Welcome />} />

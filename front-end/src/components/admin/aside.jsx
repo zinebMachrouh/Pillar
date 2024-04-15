@@ -1,5 +1,5 @@
-const AsideAdmin = ({stats,patients}) => {
-    return (  
+const AsideAdmin = ({ stats, patients, banPatient, restorePatient }) => {
+    return (
         <div className="aside">
             <div className="aside-header-admin">
                 <div className="mac">
@@ -23,11 +23,37 @@ const AsideAdmin = ({stats,patients}) => {
                     </div>
                 </div>
             </div>
-            <div className="appts">
-                
+            <div className="aside-patients">
+                {patients.length === 0 ? (
+                    <p>No Patients found!</p>
+                ) : (patients.map((patient) => (
+                    <div className="aside-patient">
+                        <div className="patient-content">
+                            {patient.patient.gender === 'male' ? (
+                                <div className="patient-top">
+                                    <i className="fa-solid fa-mars" style={{ color: "#3498DB" }} ></i>
+                                    <h4>{patient.name}</h4>
+                                </div>
+
+                            ) : (
+                                <div className="patient-top">
+                                    <i className="fa-solid fa-venus" style={{ color: "#ec4ba9" }} ></i>
+                                    <h4>{patient.name}</h4>
+                                </div>
+                            )}
+                            <span>{patient.email}</span>
+                        </div>
+                        {(!patient.deleted_at) ? (
+                            <div className="patient-ban"><button type="button" title="ban" onClick={() => banPatient(patient.id)}><i className="fa-solid fa-ban"></i></button></div>
+                        ) : (
+                            <div className="patient-restore"><button type="button" title="restore" onClick={() => restorePatient(patient.id)}><i className="fa-solid fa-arrows-rotate"></i></button></div>
+                        )}
+                    </div>
+                )))}
+
             </div>
-        </div>
+        </div >
     );
 }
- 
+
 export default AsideAdmin;

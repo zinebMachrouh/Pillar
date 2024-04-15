@@ -207,7 +207,7 @@ const AdminDashboard = () => {
                                         <td>{doctor.name}</td>
                                         <td>{doctor.email}</td>
                                         <td>{doctor.doctor.speciality}</td>
-                                        <td>{doctor.doctor.license_Number}</td>
+                                        <td>{doctor.doctor.license_number}</td>
                                         <td>{doctor.doctor.hospital_affiliation}</td>
                                         {(!doctor.deleted_at) ? (
                                             <td className="ban"><button type="button" title="ban" onClick={() => banDoctor(doctor.id)}><i className="fa-solid fa-ban"></i></button></td>
@@ -220,7 +220,7 @@ const AdminDashboard = () => {
                         </table>
                     </div>
                 </div>
-                <AsideAdmin stats={state.stats} patients={state.patients}/>
+                <AsideAdmin stats={state.stats} patients={state.patients} banPatient={banPatient} restorePatient={ restorePatient} />
             </div>
         </div>
     );

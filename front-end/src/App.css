@@ -1015,7 +1015,7 @@ table tbody tr:not(:last-child){
   align-items: center;
   justify-content: center;
 }
-.ban button{
+.ban button, .patient-ban button{
   background-color: transparent;
   color: #e74c3c;
   padding: 5px 10px;
@@ -1023,7 +1023,7 @@ table tbody tr:not(:last-child){
   cursor: pointer;
   font-size: 18px;
 }
-.restore button{
+.restore button, .patient-restore button{
   background-color: transparent;
   color: var(--main);
   padding: 5px 10px;
@@ -1045,4 +1045,41 @@ table tbody tr:not(:last-child){
   color: #fff;
   border-radius: 200px;
   background-color: #4fb5fa;
+}
+.aside-patients{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: fit-content;
+  margin-top: 30px;
+}
+.aside-patient{
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 4px 0px;
+}
+.patient-top{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.patient-top h4{
+  color: var(--dark);
+  font-size: 20px;
+}
+.patient-top i{
+  font-size: 22px;
+}
+.patient-content{
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.patient-content span{
+  color: #748da7;
+  font-size: 16px;
 }

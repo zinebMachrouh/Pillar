@@ -16,7 +16,7 @@ class Doctor extends Model
         'address',
         'speciality',
         'qualifications',
-        'license_Number',
+        'license_number',
         'hospital_affiliation',
         'experience',
         'availability',
