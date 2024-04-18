@@ -590,7 +590,7 @@ margin-bottom: 5px;
   right: 0;
   background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  display: flex;
+  display: none;
   width: 120px;
   padding: 5px 0px;
   flex-direction: column;
@@ -610,8 +610,8 @@ margin-bottom: 5px;
   text-align: center;
   border-bottom: #2c36401f 1px solid;
 }
-.pop button:focus+.details {
-  /* display: flex; */
+.pop:hover .details {
+  display: flex;
 }
 
 #welcome{
@@ -1010,10 +1010,33 @@ table tbody td{
 table tbody tr:not(:last-child){
   border-bottom: 1px solid #6060602e;
 }
+table tbody td 
 .ban, .restore{
   display: flex;
   align-items: center;
   justify-content: center;
+}
+table tbody td:last-child{
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+.delete{
+    background-color: transparent;
+      color: #e74c3c;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+}
+.approve{
+    background-color: transparent;
+      color: var(--main);
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
 }
 .ban button, .patient-ban button{
   background-color: transparent;
@@ -1082,4 +1105,53 @@ table tbody tr:not(:last-child){
 .patient-content span{
   color: #748da7;
   font-size: 16px;
+}
+.check-btn{
+  background-color: var(--main);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 7px;
+  font-size: 16px;
+  cursor: pointer;
+  align-self: flex-end;
+  margin-top: 20px
+}
+
+.details-body{
+  width: 100%;
+  height: 100vh;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='700' preserveAspectRatio='none' viewBox='0 0 1440 700'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1027%26quot%3b)' fill='none'%3e%3crect width='1440' height='700' x='0' y='0' fill='rgba(250%2c 250%2c 250%2c 1)'%3e%3c/rect%3e%3cpath d='M149.6 0C191.03 47.18 177.15 94.3 153.66 175C126.21 269.3 41.38 281.24 47.73 350C52.05 396.74 117.7 406 175 406C205.47 406 215.64 384.3 223.28 350C241.37 268.8 210.87 260 226.47 175C242.98 85 241.31 65.43 287.5 0C303.08 -22.07 318.75 0 350 0C437.5 0 437.5 0 525 0C612.5 0 612.5 0 700 0C787.5 0 787.5 0 875 0C962.5 0 962.5 0 1050 0C1137.5 0 1137.5 0 1225 0C1297.56 0 1311.38 -21.64 1370.12 0C1398.88 10.6 1376.5 64.47 1400 64.47C1436.81 64.47 1440.94 18.35 1490.74 0C1528.44 -13.89 1561.31 -28.44 1575 0C1603.44 59.06 1575 87.5 1575 175C1575 262.5 1575 262.5 1575 350C1575 437.5 1575 437.5 1575 525C1575 612.5 1618.75 656.25 1575 700C1531.25 743.75 1487.5 700 1400 700C1312.5 700 1312.5 700 1225 700C1137.5 700 1137.5 700 1050 700C979.16 700 932.32 738.76 908.33 700C878.16 651.26 953.67 594.66 941.67 525C937.01 497.95 909.13 506.91 875 506.58C788.29 505.73 787.39 513.93 700 522.64C695.03 523.14 693.2 521.01 690.28 525C628.2 609.69 638.19 627.8 570 700C555.55 715.3 547.5 700 525 700C437.5 700 437.5 700 350 700C262.5 700 262.5 700 175 700C87.5 700 43.75 743.75 0 700C-43.75 656.25 0 612.5 0 525C0 437.5 0 437.5 0 350C0 262.5 0 262.5 0 175C0 87.5 -40.33 47.17 0 0C34.47 -40.33 114.2 -40.32 149.6 0' stroke='rgba(52%2c 152%2c 219%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1400 490C1383.88 490 1374.39 508.16 1374.39 525C1374.39 539.85 1384.6 553.38 1400 553.38C1425.03 553.38 1455.26 540.44 1455.26 525C1455.26 508.75 1424.31 490 1400 490' stroke='rgba(52%2c 152%2c 219%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M79.03 0C95.28 60.59 74.26 92.35 46.95 175C34.75 211.94 12.99 239.17 0 239.17C-10.48 239.17 0 207.08 0 175C0 87.5 -27.22 60.28 0 0C12.29 -27.22 71.81 -26.91 79.03 0' stroke='rgba(52%2c 152%2c 219%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M453.41 175C503.66 108 489.45 96.36 525 17.5C528.89 8.86 523.4 0.89 532.29 0C610.9 -7.86 616.14 0 700 0C751.61 0 757.45 -15.92 803.21 0C844.95 14.52 840.99 60.87 875 60.87C904.89 60.87 895.12 12.48 931 0C982.62 -17.96 990.5 0 1050 0C1137.5 0 1137.5 0 1225 0C1270.89 0 1289.31 -28.35 1316.77 0C1374.07 59.15 1373.72 83.56 1394.53 175C1413.55 258.56 1424.73 271.92 1396.43 350C1361.3 446.92 1266.74 440.76 1267.68 525C1268.53 601.57 1331.88 600.37 1400 671.62C1415.54 687.87 1435 692.01 1435 700C1435 706.2 1417.5 700 1400 700C1312.5 700 1312.5 700 1225 700C1137.5 700 1137.5 700 1050 700C1013.89 700 977.78 720.39 977.78 700C977.78 660.52 1003.13 629.18 1050 580.26C1086.97 541.68 1134.33 568.91 1145.45 525C1163.49 453.78 1138.22 432.79 1108.33 350C1090.5 300.61 1079.91 260.64 1050 260.64C1019.4 260.64 1024.2 310.29 987.31 350C936.7 404.47 941.11 422.89 875 449.01C797.46 479.64 786.18 471.32 700 463.51C611.18 455.47 613.89 426.25 525 417.31C438.89 408.64 423.77 450.23 350 428.29C310.62 416.58 298.71 390.46 298.71 350C298.71 301.73 314 291.56 350 250.83C391.35 204.06 416.16 224.66 453.41 175' stroke='rgba(52%2c 152%2c 219%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M700 118.38C656.83 118.38 603.75 151.64 603.75 175C603.75 196.26 654.18 207.63 700 207.63C725.78 207.63 746.95 194.52 746.95 175C746.95 149.89 728.43 118.38 700 118.38' stroke='rgba(52%2c 152%2c 219%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M92.11 525C132.7 507.28 134.95 493.5 175 493.5C202.65 493.5 199.96 511.78 227.5 525C287.46 553.78 295.89 540.28 350 577.5C423.1 627.78 481.92 664.65 481.92 700C481.92 725.9 415.96 700 350 700C262.5 700 262.5 700 175 700C87.5 700 50.18 737.32 0 700C-37.32 672.25 -25.77 618.83 0 569.87C20.29 531.33 45.2 545.47 92.11 525' stroke='rgba(52%2c 152%2c 219%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M8.47 0C8.47 12.21 2.16 30.88 0 30.88C-2.08 30.88 -3.32 12.12 0 0C0.91 -3.32 8.47 -3.23 8.47 0' stroke='rgba(52%2c 152%2c 219%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M853.66 175C865.26 166.66 861.51 155.98 875 155.98C934.68 155.98 990.66 136.43 1000 175C1014.16 233.44 969.1 268.45 922.01 350C906.6 376.68 904.21 384.29 875 391.45C793.21 411.49 783.06 417.21 700 404.39C648.76 396.48 606.4 379.62 606.4 350C606.4 318.31 652.73 315.23 700 281.78C776.36 227.73 777.76 229.56 853.66 175' stroke='rgba(52%2c 152%2c 219%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1050 143.18C1022.52 79.27 1018.5 58.93 1018.5 0C1018.5 -12.66 1034.25 0 1050 0C1137.5 0 1137.5 0 1225 0C1244.2 0 1260.46 -15.74 1263.41 0C1276.86 71.76 1247.08 89.15 1257.81 175C1268.95 264.15 1316.58 269.15 1307.14 350C1300.18 409.61 1261.45 455.92 1225 455.92C1192.43 455.92 1194.43 404.21 1169.1 350C1128.8 263.75 1140.13 255.54 1093.75 175C1080.58 152.13 1060.14 166.77 1050 143.18' stroke='rgba(52%2c 152%2c 219%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M0 682.05C14.71 682.05 41.18 695.32 41.18 700C41.18 704.29 14.34 706.25 0 700C-6.25 697.28 -5.88 682.05 0 682.05' stroke='rgba(52%2c 152%2c 219%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M236.49 700C236.49 684.08 297.2 640 350 640C386.26 640 414.62 682.69 414.62 700C414.62 712.69 382.31 700 350 700C293.25 700 236.49 714.08 236.49 700' stroke='rgba(52%2c 152%2c 219%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1047.22 700C1047.22 698.48 1047.62 696.63 1050 695.39C1136.51 650.15 1146.19 605.62 1225 607.03C1275.01 607.92 1307.64 672.07 1307.64 700C1307.64 718.56 1266.32 700 1225 700C1137.5 700 1137.5 700 1050 700C1048.61 700 1047.22 700.78 1047.22 700' stroke='rgba(52%2c 152%2c 219%2c 1)' stroke-width='2'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1027'%3e%3crect width='1440' height='700' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e") !important;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.details-container{
+  width: 500px;
+  position: relative;
+  height: fit-content;
+  background-color: var(--white);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.details-container h2{
+  color: var(--dark);
+  font-size: 22px;
+}
+.details-container h1{
+  color: var(--main);
+  /* text-align: center; */
+  margin:5px 0px 25px 0px;
+}
+.details-container h4{
+  color: var(--main);
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+.details-container ul{
+  list-style: none;
+  margin-bottom: 20px;
 }

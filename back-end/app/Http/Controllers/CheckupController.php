@@ -38,8 +38,18 @@ class CheckupController extends Controller
         ]);
     }
 
-    public function updateCheckup(int $id, CheckupDTO $dto): JsonResponse
+    public function updateCheckup(int $id, Request $request): JsonResponse
     {
+        $dto = new CheckupDTO(
+            $request->input('patient_id'),
+            Auth::user()->doctor->id,
+            $request->input('symptoms'),
+            $request->input('diagnosis'),
+            $request->input('treatment_plan'),
+            $request->input('follow_up_date'),
+            $request->input('notes'),
+            $request->input('appointment_id'),
+        );
         if ($this->checkupService->updateCheckup($id, $dto)) {
             return response()->json([
                 'status' => 'success',

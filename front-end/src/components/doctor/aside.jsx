@@ -1,6 +1,6 @@
 import Appointment from "./appointment";
 
-const Aside = ({ appointments,openModal }) => {
+const Aside = ({ appointments,openModal, handleDelete, patients }) => {
     return (
         <div className="aside">
             <div className="aside-header">
@@ -21,7 +21,7 @@ const Aside = ({ appointments,openModal }) => {
                             return 1;
                         }
                     }).map((appt) => (
-                        <Appointment key={appt.id} appointment={appt} />
+                        <Appointment key={appt.id} appointment={appt} handleDelete={handleDelete} patients={patients} />
                     )))
                 }
             </div>

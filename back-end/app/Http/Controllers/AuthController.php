@@ -31,7 +31,7 @@ class AuthController extends Controller
         $role = $user->role->name;
 
         if ($role === 'doctor') {
-            $redirect = 'doctor/patients';
+            $redirect = 'doctor';
         } elseif ($role === 'admin') {
             $redirect = 'admin/dashboard';
         }elseif ($role === 'patient'){
@@ -58,7 +58,8 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']), // Hash the password
+            'cin' => $validatedData['cin'],
+            'password' => Hash::make($validatedData['password']), 
             'phone_number' => $validatedData['phone_number'],
             'role_id' => 2,
         ]);

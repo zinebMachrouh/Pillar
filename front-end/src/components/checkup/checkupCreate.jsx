@@ -50,12 +50,12 @@ const Checkup = () => {
                 }
             });
         }
-        navigate('/doctor/patients');
+        navigate('/doctor');
     };
 
     return (
         <div id="signup-body">
-            <Link to='/doctor/patients' className="back">
+            <Link to='/doctor' className="back">
                 <i className="fa-solid fa-arrow-left"></i>
             </Link>
             <div className="form-container">
@@ -114,7 +114,7 @@ const Checkup = () => {
                             placeholder="Enter Notes"
                         />
                     </div>
-                    <button type="submit">{checkup ? 'Save Changes' : 'Create Checkup'}</button>
+                    <button type="submit" className="check-btn">{checkup ? 'Save Changes' : 'Create Checkup'}</button>
                 </form>
             </div>
         </div>

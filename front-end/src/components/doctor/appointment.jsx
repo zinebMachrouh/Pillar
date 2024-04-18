@@ -1,7 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import CreateModal from "./createModal";
 
-const Appointment = ({ appointment }) => {
+const Appointment = ({ appointment, handleDelete, patients }) => {
+    const [showModal, setShowModal] = useState(false);
+
+    const openModal = () => {
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
     const formatDate = () => {
         const date = new Date(appointment.date);
         const dayOfWeek = date.toLocaleString('en-US', { weekday: 'short' });
@@ -11,7 +22,6 @@ const Appointment = ({ appointment }) => {
 
         return `${dayOfWeek} ${month} ${dayOfMonth} - ${time}`;
     };
-    console.log(appointment.checkup);
     function getAppointmentStatus() {
         const currentDate = new Date();
         const oneHourAgo = new Date(currentDate.getTime() - 60 * 60 * 1000);
@@ -29,13 +39,15 @@ const Appointment = ({ appointment }) => {
 
     const navigate = useNavigate();
     const handleNavigate = () => {
-        if (Object.keys(appointment.checkup).length !== 0) {
-            navigate('/create/checkup', { state: { appointment_id: appointment.id, patient_id: appointment.patient.id, checkup: appointment.checkup } });
-        } else {
-            navigate('/create/checkup', { state: { appointment_id: appointment.id, patient_id: appointment.patient.id } });
-        }
+        navigate('/create/checkup', { state: { appointment_id: appointment.id, patient_id: appointment.patient.id, checkup: appointment.checkup } });
     };
-
+    const handleDetails = () => { 
+        if (appointment.checkup) {
+            navigate('/appointment', { state: { appointment: appointment, patient: appointment.patient, checkup: appointment.checkup } });   
+        } else {
+            handleNavigate();
+        }
+    }
     return (
         <div className="appt">
             <div className="appt-side"></div>
@@ -50,8 +62,8 @@ const Appointment = ({ appointment }) => {
                         {
                             (status.label === 'Upcoming') ? (
                                 <div className="details">
-                                    <span>Modify</span>
-                                    <span>Delete</span>
+                                    <span onClick={openModal}>Modify</span>
+                                    <span onClick={()=>handleDelete(appointment.id)}>Delete</span>
                                 </div>
                             ) : ((status.label === 'In Progress') ? (
                                 <div className="details">
@@ -59,7 +71,7 @@ const Appointment = ({ appointment }) => {
                                 </div>
                             ) : (
                                 <div className="details">
-                                    <span>Details</span>
+                                    <span onClick={handleDetails}>Details</span>
                                     <span onClick={handleNavigate}>Checkup</span>
                                 </div>
                             ))
@@ -84,6 +96,8 @@ const Appointment = ({ appointment }) => {
                     <p className={status.className}>{status.label}</p>
                 </div>
             </div>
+            {showModal && <CreateModal patients={patients} closeModal={closeModal} appointment={appointment} />}
+
         </div>
     );
 }

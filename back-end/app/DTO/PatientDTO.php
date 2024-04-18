@@ -2,6 +2,7 @@
 
 namespace App\DTO;
 
+use App\Models\Patient;
 use Illuminate\Support\Facades\Hash;
 
 class PatientDTO extends UserDTO
@@ -17,9 +18,9 @@ class PatientDTO extends UserDTO
     public $medicalHistory;
     public $allergies;
 
-    public function __construct($name, $email, $password, $phone_number, $role_id, $gender, $birthday, $address, $emergencyContactName, $emergencyContactNumber, $insuranceProvider, $insurancePolicyNumber, $lastVisit, $medicalHistory, $allergies)
+    public function __construct($name, $email,$cin, $password, $phone_number, $role_id, $gender, $birthday, $address, $emergencyContactName, $emergencyContactNumber, $insuranceProvider, $insurancePolicyNumber, $lastVisit, $medicalHistory, $allergies)
     {
-        parent::__construct($name, $email, $password, $phone_number, $role_id);
+        parent::__construct($name, $email,$cin, $password, $phone_number, $role_id);
 
         $this->gender = $gender;
         $this->birthday = $birthday;
@@ -39,6 +40,7 @@ class PatientDTO extends UserDTO
         return new self(
             $data['name'],
             $data['email'],
+            $data['cin'],
             $password,
             $data['phone_number'],
             3,
@@ -51,7 +53,7 @@ class PatientDTO extends UserDTO
             $data['insurance_policy_number'],
             $data['last_visit'],
             $data['medical_history'],
-            $data['allergies']
+            $data['allergies'],
         );
     }
 
@@ -81,5 +83,6 @@ class PatientDTO extends UserDTO
             'plain' => $password
         ];
     }
+
 }
 

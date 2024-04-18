@@ -2,6 +2,7 @@ import { NavLink, Link } from "react-router-dom";
 
 const Welcome = () => {
     const logged = sessionStorage.getItem('logged');
+    const redirect = sessionStorage.getItem('redirect');
     return (
         <section id="welcome">
             <div className="hero">
@@ -16,7 +17,7 @@ const Welcome = () => {
                     </nav>
                     {logged ? (
                         <div>
-                            <NavLink to='/'>Dashboard</NavLink>
+                            <NavLink to={`/${redirect}`}>Dashboard</NavLink>
                         </div>
                     ) : (
                         <div>

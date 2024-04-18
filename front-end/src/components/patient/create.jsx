@@ -10,6 +10,7 @@ const PatientCreate = () => {
         gender: '',
         birthday: '',
         address: '',
+        cin: '',
         emergency_contact_name: '',
         emergency_contact_number: '',
         insurance_provider: '',
@@ -32,13 +33,13 @@ const PatientCreate = () => {
                 'Authorization': `Bearer ${token}`,
             }
         });
-        window.location.href = `/doctor/patients`;
+        window.location.href = `/doctor`;
 
     };
 
     return (
-        <div id="login-body">
-            <Link to='/doctor/patients' className="back">
+        <div className="details-body" id="login-body">
+            <Link to='/doctor' className="back">
                 <i className="fa-solid fa-arrow-left"></i>
             </Link>
             <div className="form-container" id='createP'>
@@ -68,9 +69,15 @@ const PatientCreate = () => {
                             <input type="number" name="phone_number" id="phone_number" value={formData.phone_number} onChange={handleChange} placeholder="Enter Phone Number" />
                         </div>
                     </div>
-                    <div className="input-group">
-                        <label htmlFor="address">Address</label>
-                        <input type="text" name="address" id="address" value={formData.address} onChange={handleChange} placeholder="Enter Address" />
+                    <div className="group">
+                        <div className="input-group">
+                            <label htmlFor="cin">Cin</label>
+                            <input type="text" name="cin" id="cin" value={formData.cin} onChange={handleChange} placeholder="Enter Cin" />
+                        </div>
+                        <div className="input-group">
+                            <label htmlFor="address">Address</label>
+                            <input type="text" name="address" id="address" value={formData.address} onChange={handleChange} placeholder="Enter Address" />
+                        </div>
                     </div>
 
                     <div className="group">

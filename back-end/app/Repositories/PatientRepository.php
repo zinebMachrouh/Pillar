@@ -18,15 +18,17 @@ class PatientRepository implements PatientRepositoryInterface
 	public function index($user)
 	{
 		$doctor = $user->doctor;
-		$patients = $doctor->patients()->orderBy('created_at')->with('user')->get();
+		$patients = $doctor->patients()->latest('updated_at')->with('user')->get();
 		$appointments = $doctor->appointments()->with('patient.user', 'checkup')->latest('updated_at')->where('status','!=',0)->get();
+		$pending = $doctor->appointments()->with('patient.user')->latest('updated_at')->where('status', 0)->get();
+
 		$checkups = $doctor->checkups()->latest('updated_at')->get();
 		$statistics = [
 			'Patients' => $doctor->patients()->count(),
 			'Appoinments' => $doctor->appointments()->where('status', '!=', 0)->count(),
 			'Checkups' => Checkup::where('doctor_id', $doctor->id)->count()
 		];
-		return ['patients' => $patients, 'user' => $user, 'statistics' => $statistics, 'appointments'=> $appointments, 'checkups' => $checkups];
+		return ['patients' => $patients, 'user' => $user, 'statistics' => $statistics, 'appointments'=> $appointments, 'checkups' => $checkups,'pending'=>$pending];
 	}
 
 	public function store(PatientDTO $data)
@@ -35,6 +37,7 @@ class PatientRepository implements PatientRepositoryInterface
 		$user = User::create([
 			'name' => $data->name,
 			'email' => $data->email,
+			'cin' => $data->cin,
 			'password' => $data->password['hashed'],
 			'phone_number' => $data->phone_number,
 			'role_id' => $data->role_id

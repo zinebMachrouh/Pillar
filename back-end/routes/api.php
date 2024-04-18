@@ -49,7 +49,9 @@ Route::post('/appointments', [AppointmentController::class, 'create']);
 Route::get('/appointments/{id}', [AppointmentController::class, 'find']);
 Route::put('/appointments/{id}', [AppointmentController::class, 'update']);
 Route::delete('/appointments/{id}', [AppointmentController::class, 'delete']);
+Route::patch('/appointments/{id}', [AppointmentController::class, 'modify']);
 Route::get('/appointments/upcoming', [AppointmentController::class, 'getUpcomingAppointments']);
+Route::get('/appointments/pending', [AppointmentController::class, 'getPending']);
 
 Route::post('/checkups', [CheckupController::class, 'createCheckup']);
 Route::put('/checkups/{id}', [CheckupController::class, 'updateCheckup']);

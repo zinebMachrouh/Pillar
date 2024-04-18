@@ -21,6 +21,11 @@ class AppointmentService implements AppointmentServiceInterface
 	{
 		return $this->appointmentRepository->create($dto);
 	}
+	public function getPending()
+	{
+		$user = Auth::user();
+		return $this->appointmentRepository->getPending($user);
+	}
 	public function findAppointment(int $id)
 	{
 		return $this->appointmentRepository->find($id);
@@ -35,9 +40,14 @@ class AppointmentService implements AppointmentServiceInterface
 	{
 		return $this->appointmentRepository->delete($id);
 	}
+	public function approveAppointment(int $id): bool
+	{
+		return $this->appointmentRepository->modify($id);
+	}
 	public function getUpcomingAppointments()
 	{
 		$user = Auth::user();
 		return $this->appointmentRepository->getUpcomingAppointments($user);
 	}
+	
 }

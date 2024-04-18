@@ -11,6 +11,9 @@ import Checkup from './components/checkup/checkupCreate';
 import Page404 from './components/404';
 import AdminDashboard from './components/admin';
 import { jwtDecode } from 'jwt-decode';
+import Details from './components/doctor/details';
+import AppRequests from './components/doctor/childs/requests';
+import Main from './components/doctor/childs/main';
 
 const App = () => {
   const token = sessionStorage.getItem('token');
@@ -26,13 +29,17 @@ const App = () => {
       {token && (
         <>
           <Route path='/doctor/create' element={<DoctorCreate />} />
-          <Route path='/doctor/patients' element={<DoctorIndex />} />
+          <Route path='/doctor' element={<DoctorIndex />} >
+            <Route index path='' element={<Main />} />
+            <Route path='/doctor/requests' element={<AppRequests />} />
+          </Route>
           <Route path='/patient/create' element={<PatientCreate />} />
           <Route path='/create/checkup' element={<Checkup />} />
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
+          <Route path='/appointment' element={<Details/>} />
         </>
       )}
-      {/* <Route path='*' element={<Page404 />} /> */}
+      <Route path='*' element={<Page404 />} />
     </Routes>
   );
 }

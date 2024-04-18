@@ -11,7 +11,7 @@ class UpdateAppointmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,6 @@ class UpdateAppointmentRequest extends FormRequest
     {
         return [
             'patient_id' => ['required', 'required', 'exists:patients,id'],
-            'doctor_id' => ['required', 'required', 'exists:doctors,id'],
             'date' => ['required', 'required', 'date'],
             'notes' => ['nullable', 'string'],
         ];

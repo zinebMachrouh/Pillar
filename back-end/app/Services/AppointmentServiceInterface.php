@@ -13,6 +13,8 @@ interface AppointmentServiceInterface
     public function updateAppointment(int $id, AppointmentDTO $dto): bool;
 
     public function deleteAppointment(int $id): bool;
+    public function approveAppointment(int $id): bool;
+    public function getPending();
     public function findAppointment(int $id);
 
     public function getUpcomingAppointments();

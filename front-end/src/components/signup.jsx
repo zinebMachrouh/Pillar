@@ -7,6 +7,7 @@ const SignUp = () => {
     const [registerData, setRegisterData] = useState({
         name: '',
         email: '',
+        cin :'',
         password: '',
         phone_number: ''
     });
@@ -54,6 +55,10 @@ const SignUp = () => {
                     <div className="input-group">
                         <label htmlFor="email">Email</label>
                         <input type="email" name="email" id="email" value={registerData.email} onChange={handleInputChange} placeholder="Enter Email" />
+                    </div>
+                    <div className="input-group">
+                        <label htmlFor="cin">Cin</label>
+                        <input type="text" name="cin" id="cin" value={registerData.cin} onChange={handleInputChange} placeholder="Enter Cin" />
                     </div>
                     <div className="input-group">
                         <label htmlFor="password">Password</label>

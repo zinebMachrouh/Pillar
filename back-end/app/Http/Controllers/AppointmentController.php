@@ -89,6 +89,20 @@ class AppointmentController extends Controller
             'message' => 'Appointment not found or could not be deleted',
         ], 404);
     }
+    public function modify(int $id): JsonResponse
+    {
+        if ($this->appointmentService->approveAppointment($id)) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Appointment deleted successfully',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Appointment not found or could not be deleted',
+        ], 404);
+    }
 
     public function getUpcomingAppointments(): JsonResponse
     {

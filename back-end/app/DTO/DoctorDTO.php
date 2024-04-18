@@ -18,9 +18,9 @@ class DoctorDTO extends UserDTO
     public $about;
     public $user_id;
 
-    public function __construct($name, $email, $password, $phone_number, $roleId, $gender, $birthday, $address, $speciality, $qualifications, $license_Number, $hospital_affiliation, $experience, $availability, $working_hours, $appointment_fee, $about, $user_id)
+    public function __construct($name, $email,$cin, $password, $phone_number, $roleId, $gender, $birthday, $address, $speciality, $qualifications, $license_Number, $hospital_affiliation, $experience, $availability, $working_hours, $appointment_fee, $about, $user_id)
     {
-        parent::__construct($name, $email, $password, $phone_number, $roleId);
+        parent::__construct($name, $email,$cin, $password, $phone_number, $roleId);
 
         $this->gender = $gender;
         $this->birthday = $birthday;
@@ -42,6 +42,7 @@ class DoctorDTO extends UserDTO
         return new self(
             $data['name'],
             $data['email'],
+            $data['cin'],
             $data['password'],
             $data['phone_number'],
             $data['role_id'],

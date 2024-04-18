@@ -25,7 +25,11 @@ class AppointmentRepository implements AppointmentRepositoryInterface
 			]);
 		}
 	}
-
+	public function getPending($user)
+	{
+		$appts = $user->doctor()->appointments()->with('patient.user')->latest('updated_at')->where('status', 0)->get();
+		return $appts;
+	}
 	public function find(int $id)
 	{
 		return Appointment::find($id);
@@ -52,9 +56,23 @@ class AppointmentRepository implements AppointmentRepositoryInterface
 
 		return $appointment->delete();
 	}
+
+	public function modify(int $id): bool
+	{
+		$appointment = Appointment::find($id);
+		if (!$appointment) {
+			return false;
+		}
+
+		$appointment->status = 1;
+
+		return $appointment->save();
+
+	}
 	public function getUpcomingAppointments($user)
 	{
 		$appts = $user->doctor()->appointments()->whereDate('date', '>=', Carbon::now())->get();
 		return $appts;
 	}
+	
 }

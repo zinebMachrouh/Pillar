@@ -22,7 +22,7 @@ class DoctorController extends Controller
             'status' => 'success',
             'message' => 'Doctor created successfully',
             'doctor' => $doctor,
-            'redirect' => 'doctor/patients'
+            'redirect' => 'doctor'
         ], 201);
     }
 }

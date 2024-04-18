@@ -16,6 +16,7 @@ class PatientRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'cin' => 'required|string|max:255|unique:users',
             'phone_number' => 'required|integer',
             'gender' => 'required|string',
             'birthday' => 'required|date',
