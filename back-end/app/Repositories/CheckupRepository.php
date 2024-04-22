@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\DTO\CheckupDTO;
+use App\Models\Appointment;
 use App\Models\Checkup;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
@@ -11,7 +12,14 @@ class CheckupRepository implements CheckupRepositoryInterface
 {
 	public function create(CheckupDTO $dto): Checkup
 	{
-		return Checkup::create($dto->toArray());
+		$checkup = Checkup::create($dto->toArray());
+		Appointment::create([
+			'patient_id' =>$checkup->patient_id,
+			'doctor_id' =>$checkup->doctor_id,
+			'date' =>$checkup->follow_up_date,
+			'status' => 1,
+		]);
+		return $checkup;
 	}
 
 	public function find(int $id): ?Checkup

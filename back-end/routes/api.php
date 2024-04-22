@@ -39,8 +39,9 @@ Route::get('/patients', [PatientController::class, 'index']);
 Route::post('/patient/store', [PatientController::class, 'store']);
 Route::get('/patients/{id}', [PatientController::class, 'show']);
 Route::post('/patients/search', [PatientController::class, 'search']);
+Route::post('/patients/attach', [PatientController::class, 'addByCin']);
 
-Route::post('/medications/{patientId}', [MedController::class, 'store']);
+Route::post('/medications', [MedController::class, 'store']);
 Route::put('/medications/{id}', [MedController::class, 'update']);
 Route::delete('/medications/{id}', [MedController::class, 'destroy']);
 Route::get('/patients/{patientId}/meds', [MedController::class, 'getMeds']);

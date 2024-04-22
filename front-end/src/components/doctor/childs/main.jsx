@@ -3,7 +3,7 @@ import Patient from "../patient";
 import Stats from "../stats";
 import { MyContext } from '../index';
 const Main = () => {
-    const { patients, checkups, appointments } = useContext(MyContext);
+    const { patients, checkups, appointments, user } = useContext(MyContext);
     return (  
         <section>
             <div className="statistics">
@@ -14,7 +14,7 @@ const Main = () => {
                 {patients.length === 0 ? (
                     <p>No Patients found!</p>
                 ) : (patients.map((patient) => (
-                    <Patient key={patient.id} patient={patient} />
+                    <Patient key={patient.id} patient={patient} user={user} patients={patients} />
                 )))}
             </div>
         </section>

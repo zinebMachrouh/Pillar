@@ -1,4 +1,11 @@
-const Patient = ({patient}) => {
+import { useNavigate } from "react-router-dom";
+
+const Patient = ({ patient, user, patients }) => {
+    
+    const navigate = useNavigate()
+    const handleNavigate = () => {
+        navigate('/patient/details', { state: { user: user, patient:patient, patients:patients } });
+    };
     return (  
         <div className="patient">
             {patient.gender === 'male' ? (
@@ -29,7 +36,7 @@ const Patient = ({patient}) => {
                     <li><strong>Name:</strong> {patient.emergency_contact_name}</li>
                     <li><strong>Number:</strong> {patient.emergency_contact_number}</li>
                 </ul>
-                <button type="button">View Details</button>
+                <button type="button" onClick={handleNavigate}>View Details</button>
             </div>
         </div>
     );

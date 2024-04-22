@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 interface MedServiceInterface
 {
-    public function createMedication(MedDTO $dto, int $patientId);
+    public function createMedication(MedDTO $dto);
 
     public function updateMedication(MedDTO $dto, int $id);
 

@@ -52,9 +52,9 @@ class PatientRepository implements PatientRepositoryInterface
 	{
 		$patient = Patient::findOrFail($id);
 		$medications = $patient->meds;
-		$appointments = $patient->appointments;
+		$appointments = $patient-> appointments()->with('patient.user', 'checkup')->latest('updated_at')->where('status', '!=', 0)->get();
 		$checkups = $patient->checkups()->orderBy('created_at', 'desc')->limit(3)->get();
-		return ['patient' => $patient, 'medications' => $medications, 'appointments' => $appointments, 'checkups' => $checkups];
+		return [ 'medications' => $medications, 'appointments' => $appointments, 'checkups' => $checkups];
 	}
 
 	public function search(array $data)

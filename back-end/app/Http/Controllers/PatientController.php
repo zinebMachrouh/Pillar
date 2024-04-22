@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use App\DTO\PatientDTO;
 use App\Http\Requests\PatientRequest;
+use App\Models\User;
 use App\Services\PatientServiceInterface;
 use Illuminate\Http\Request;
 
@@ -43,5 +44,23 @@ class PatientController extends Controller
         ]);
         $patients = $this->patientService->search($data);
         return response()->json($patients);
+    }
+    public function addByCin(Request $request)
+    {
+        $data =
+            $request->validate([
+                'cin' => 'required|string|min:5'
+            ]);;
+        $doctor = auth()->user()->doctor;
+        $user = User::where('cin', $data['cin'])->with('patient')->first();
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        if ($doctor->patients()->where('patient_id', $user->patient->id)->exists()) {
+            return response()->json(['message' => 'Patient is already attached to this doctor']);
+        }
+
+        $doctor->patients()->attach($user->patient->id);
+        return response()->json(['message' => 'Patient attached successfully']);
     }
 }

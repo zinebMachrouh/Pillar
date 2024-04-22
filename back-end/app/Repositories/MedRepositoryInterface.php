@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 interface MedRepositoryInterface
 {
-    public function create(MedDTO $dto, int $patientId);
+    public function create(MedDTO $dto);
 
     public function update(MedDTO $dto, int $id);
 

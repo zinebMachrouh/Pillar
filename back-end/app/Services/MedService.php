@@ -15,9 +15,9 @@ class MedService implements MedServiceInterface
 		$this->medRepository = $medRepository;
 	}
 
-	public function createMedication(MedDTO $dto, int $patientId)
+	public function createMedication(MedDTO $dto)
 	{
-		return $this->medRepository->create($dto, $patientId);
+		return $this->medRepository->create($dto);
 	}
 
 	public function updateMedication(MedDTO $dto, int $id)

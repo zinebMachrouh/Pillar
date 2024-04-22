@@ -1,10 +1,9 @@
-import React,{ createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { useNavigate, NavLink, Link, Outlet } from 'react-router-dom';
 import axios from 'axios';
-import Patient from "./patient";
 import Aside from "./aside";
 import CreateModal from "./createModal";
-import Stats from "./stats";
+import AddPatient from "./addModal";
 
 export const MyContext = createContext();
 const DoctorIndex = () => {
@@ -19,7 +18,8 @@ const DoctorIndex = () => {
         stats: {},
         user: {},
         searchTerm: '',
-        showModal: false
+        showModal: false,
+        openModal: false,
     });
 
     const fetchData = async () => {
@@ -47,12 +47,16 @@ const DoctorIndex = () => {
     };
 
     const handleDelete = async (id) => {
-        const response = await axios.delete(`http://127.0.0.1:8000/api/appointments/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
-        fetchData()
+        try {
+            await axios.delete(`http://127.0.0.1:8000/api/appointments/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            fetchData();
+        } catch (error) {
+            console.error('Error deleting appointment:', error);
+        }
     }
     const handleApprove = async (id) => {
         const response = await axios.patch(`http://127.0.0.1:8000/api/appointments/${id}`, {
@@ -78,7 +82,7 @@ const DoctorIndex = () => {
                     ...prevState,
                     patients: response.data.patients
                 }));
-                
+
             } catch (error) {
                 console.error('Error searching patients:', error);
             }
@@ -109,7 +113,7 @@ const DoctorIndex = () => {
 
     useEffect(() => {
         fetchData();
-    },[])
+    }, [])
 
     useEffect(() => {
         window.history.pushState(null, null, window.location.href);
@@ -136,6 +140,23 @@ const DoctorIndex = () => {
             showModal: false
         }));
     };
+    const showModal = () => {
+        setState(prevState => ({
+            ...prevState,
+            openModal: true
+        }));
+    };
+
+    const shutModal = () => {
+        setState(prevState => ({
+            ...prevState,
+            openModal: false
+        }));
+    };
+    
+    const handleRefresh = () => {
+        window.location.reload();
+    };
 
     return (
         <div className="dashboard">
@@ -147,6 +168,7 @@ const DoctorIndex = () => {
                     <NavLink to='/doctor' end><i className="fa-solid fa-house"></i></NavLink>
                     <NavLink to='/'><i className="fa-solid fa-comments"></i></NavLink>
                     <NavLink to='/'><i className="fa-solid fa-heart-pulse"></i></NavLink>
+                    <button type="button" onClick={showModal}><i class="fa-solid fa-user-plus"></i></button>
                     <NavLink to='/doctor/requests'><i className="fa-solid fa-calendar-days"></i></NavLink>
                     <hr />
                     <NavLink to='/'><i className="fa-solid fa-gear"></i></NavLink>
@@ -170,13 +192,15 @@ const DoctorIndex = () => {
                         </div>
                     </div>
                     <div className="reminder"></div>
-                    <MyContext.Provider value={{ patients: state.patients, checkups: state.checkups, appointments: state.appointments, pending:state.pending, handleDelete:handleDelete, handleApprove:handleApprove}}>
+                    <MyContext.Provider value={{ user: state.user, patients: state.patients, checkups: state.checkups, appointments: state.appointments, pending: state.pending, handleDelete: handleDelete, handleApprove: handleApprove }}>
                         <Outlet />
                     </MyContext.Provider>
                 </div>
-                <Aside  appointments={state.appointments} patients={state.patients} openModal={openModal} handleDelete={ handleDelete} />
+                <Aside appointments={state.appointments} patients={state.patients} openModal={openModal} handleDelete={handleDelete} />
             </div>
-            {state.showModal && <CreateModal patients={state.patients} closeModal={ closeModal} />}
+            <button type="button" className="refresh" onClick={handleRefresh}><i class="fa-solid fa-rotate"></i></button>
+            {state.showModal && <CreateModal patients={state.patients} closeModal={closeModal} />}
+            {state.openModal && <AddPatient closeModal={shutModal} />}
         </div>
     );
 }

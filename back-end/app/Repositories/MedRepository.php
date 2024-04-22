@@ -6,12 +6,11 @@ use App\DTO\MedDTO;
 use App\Models\Med;
 use Illuminate\Support\Collection;
 
-class EloquentMedRepository implements MedRepositoryInterface
+class MedRepository implements MedRepositoryInterface
 {
-	public function create(MedDTO $dto, int $patientId)
+	public function create(MedDTO $dto)
 	{
 		$data = $dto->toArray();
-		$data['patient_id'] = $patientId;
 		return Med::create($data);
 	}
 
