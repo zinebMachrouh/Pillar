@@ -1,4 +1,4 @@
-const PatientInfo = ({ patient, checksCount, apptsCount }) => {
+const PatientInfo = ({ patient, checksCount, apptsCount, handleNavigate }) => {
     return (
         <div className="content">
             <div className="rem-right">
@@ -14,7 +14,7 @@ const PatientInfo = ({ patient, checksCount, apptsCount }) => {
                         <span>Checkups</span>
                     </div>
                 </div>
-                <button type="button">Modify Information</button>
+                <button type="button" onClick={handleNavigate}>Modify Information</button>
             </div>
             <div className="rem-left">
                 <div className="rem-top">

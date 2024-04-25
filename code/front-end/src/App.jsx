@@ -19,6 +19,7 @@ import PatienDashboard from './components/patient';
 import MainContent from './components/patient/main';
 import PatientRequests from './components/patient/requests';
 import DoctorDetails from './components/patient/doctorDetails';
+import ModifyInfo from './components/modifyInfo';
 
 const App = () => {
   const token = sessionStorage.getItem('token');
@@ -34,7 +35,7 @@ const App = () => {
       <Route path='/' element={<Welcome />} />
       <Route path='/signup' element={<SignUp />} />
       <Route path='/appointment' element={<Details />} />
-
+      <Route path='/modify/user' element={<ModifyInfo/>} />
       {token ? (
         <>
           {role === '1' && (
