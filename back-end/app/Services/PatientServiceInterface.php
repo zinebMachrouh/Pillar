@@ -7,6 +7,7 @@ use App\DTO\PatientDTO;
 interface PatientServiceInterface
 {
     public function index();
+    public function getData();
 
     public function store(PatientDTO $data);
 

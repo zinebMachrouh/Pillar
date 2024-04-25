@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\DTO\AppointmentDTO;
 use App\DTO\UserDTO;
 use App\Models\User;
 use App\DTO\PatientDTO;
@@ -19,7 +20,7 @@ class PatientRepository implements PatientRepositoryInterface
 	{
 		$doctor = $user->doctor;
 		$patients = $doctor->patients()->latest('updated_at')->with('user')->get();
-		$appointments = $doctor->appointments()->with('patient.user', 'checkup')->latest('updated_at')->where('status','!=',0)->get();
+		$appointments = $doctor->appointments()->with('patient.user', 'checkup')->latest('updated_at')->where('status', '!=', 0)->get();
 		$pending = $doctor->appointments()->with('patient.user')->latest('updated_at')->where('status', 0)->get();
 
 		$checkups = $doctor->checkups()->latest('updated_at')->get();
@@ -28,7 +29,22 @@ class PatientRepository implements PatientRepositoryInterface
 			'Appoinments' => $doctor->appointments()->where('status', '!=', 0)->count(),
 			'Checkups' => Checkup::where('doctor_id', $doctor->id)->count()
 		];
-		return ['patients' => $patients, 'user' => $user, 'statistics' => $statistics, 'appointments'=> $appointments, 'checkups' => $checkups,'pending'=>$pending];
+		return ['patients' => $patients, 'user' => $user, 'statistics' => $statistics, 'appointments' => $appointments, 'checkups' => $checkups, 'pending' => $pending];
+	}
+
+	public function getData($user)
+	{
+		$patient = $user->patient->load('user');
+		$patient->user->makeHidden('password');
+
+		// $patient = Patient::where('user_id', $user->id)->with('user')->first();
+		$appointments = $patient->appointments()->with('doctor.user', 'checkup', 'patient.user')->latest('updated_at')->where('status', '!=', 0)->get();
+		$checkups = $patient->checkups()->latest('updated_at')->get();
+		$pending = $patient->appointments()->with('doctor.user')->latest('updated_at')->where('status', 0)->get();
+		$doctors = $user->patient->doctors()->with('user')->get();
+
+		return ['patient' => $patient, 'appointments' => $appointments, 'checkups' => $checkups, 'doctors' => $doctors, 'pending' => $pending];
+		// return $patient;
 	}
 
 	public function store(PatientDTO $data)
@@ -42,7 +58,7 @@ class PatientRepository implements PatientRepositoryInterface
 			'phone_number' => $data->phone_number,
 			'role_id' => $data->role_id
 		]);
-		Mail::to($user->email)->send(new PatientPassword($user->name,$user->email,$data->password['plain']));
+		Mail::to($user->email)->send(new PatientPassword($user->name, $user->email, $data->password['plain']));
 		$patient = $user->patient()->create($data->toArray());
 		$authUser->doctor->patients()->attach($patient->id);
 		return ['status' => 'success', 'message' => 'Patient created successfully', 'patient' => $patient];
@@ -52,24 +68,22 @@ class PatientRepository implements PatientRepositoryInterface
 	{
 		$patient = Patient::findOrFail($id);
 		$medications = $patient->meds;
-		$appointments = $patient-> appointments()->with('patient.user', 'checkup')->latest('updated_at')->where('status', '!=', 0)->get();
+		$appointments = $patient->appointments()->with('patient.user', 'checkup', 'doctor.user')->latest('updated_at')->where('status', '!=', 0)->get();
 		$checkups = $patient->checkups()->orderBy('created_at', 'desc')->limit(3)->get();
-		return [ 'medications' => $medications, 'appointments' => $appointments, 'checkups' => $checkups];
+		return ['medications' => $medications, 'appointments' => $appointments, 'checkups' => $checkups];
 	}
 
 	public function search(array $data)
 	{
 		$query = $data['query'];
 
-		$doctorId = 1;
-
+		$doctorId = Auth::user()->doctor->id;
 		$patients = Patient::whereHas('user', function ($queryBuilder) use ($query) {
 			$queryBuilder->where('email', 'like', '%' . $query . '%')
-			->orWhere('name', 'like', '%' . $query . '%');
+				->orWhere('name', 'like', '%' . $query . '%');
 		})->whereHas('doctors', function ($queryBuilder) use ($doctorId) {
 			$queryBuilder->where('doctor_id', $doctorId);
 		})->orderBy('created_at')->with('user')->get();
-
 
 		return ['patients' => $patients];
 	}

@@ -14,7 +14,7 @@ const Details = () => {
     const { appointment, patient, checkup } = location.state;
     return (
         <div className="details-body">
-            <Link to='/doctor' className="back">
+            <Link to={`/${sessionStorage.getItem('redirect') }`} className="back">
                 <i className="fa-solid fa-arrow-left"></i>
             </Link>
             <div className="details-container">

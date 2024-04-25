@@ -24,6 +24,11 @@ class PatientController extends Controller
         return response()->json($patients);
     }
 
+    public function getData(){
+        $response = $this->patientService->getData();
+        return response()->json($response);
+    }
+
     public function store(PatientRequest $request)
     {
         $patientDto = PatientDTO::fromRequest($request->all());

@@ -16,7 +16,7 @@ class AppointmentRepository implements AppointmentRepositoryInterface
 		$taken = Appointment::where('doctor_id', $dto->doctor_id)->where('date', $dto->date)->first();
 
 		if ($taken) {
-			return response()->json(['error' => 'Selected date and time are already taken.'], 422);
+			return response()->json(['message' => 'Selected date and time are already taken.'], 422);
 		} else {
 			return response()->json([
 				'status' => '200',

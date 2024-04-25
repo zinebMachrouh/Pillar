@@ -380,7 +380,7 @@
   color: var(--dark);
 }
 .patient{
-  width: 250px;
+  width: 370px;
   height: 300px;
   background-color: var(--white);
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -1267,4 +1267,107 @@ table tbody td:last-child{
   cursor: pointer;
   outline: none;
   font-size: 22px;
+}
+.doctors{
+  margin-top: 15px;
+}
+.d-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  margin-bottom: 2rem;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color: #fff;
+  background-size: cover;
+  background-position: center;
+  padding: 1.5rem;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.d-card .card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.d-card .title {
+  font-size: 22px;
+  line-height: 2rem;
+  font-weight: 700;
+  color: var(--main);
+}
+
+.d-card .price {
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--dark)
+}
+
+.d-card .desc {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.625;
+  color: #9ca3af;
+}
+
+.d-card .lists {
+  margin-bottom: 1.5rem;
+  flex: 1 1 0%;
+  overflow: auto;
+  color: rgba(156, 163, 175, 1);
+}
+
+.d-card .lists .list {
+  margin-bottom: 0.5rem;
+  display: flex;
+  margin-left: 0.5rem;
+  align-items: center;
+  width: 95%;
+}
+
+.d-card .lists .list i {
+  margin-right: 10px;
+  color: var(--main);
+  width: 5%;
+}
+.d-card .lists .list span {
+  font-size: 16px;
+  color: var(--dark);
+  width: 95%;
+}
+.d-card .buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.d-card .action {
+  border: none;
+  outline: none;
+  display: inline-block;
+  border-radius: 0.25rem;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='700' preserveAspectRatio='none' viewBox='0 0 1440 700'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1009%26quot%3b)' fill='none'%3e%3crect width='1440' height='700' x='0' y='0' fill='rgba(52%2c 152%2c 219%2c 1)'%3e%3c/rect%3e%3cpath d='M727.94-96.24C617.63-24.59 730.01 316.88 481.55 368.63 233.08 420.38 124.7 593.99-11.24 599.63' stroke='rgba(250%2c 250%2c 250%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M803.6-21.1C681.42 27.57 774.2 371.61 490.95 401.98 207.7 432.35 31.68 622.63-134.34 625.98' stroke='rgba(250%2c 250%2c 250%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M860.34-104.3C650.43-40.04 598.79 549.63 286.23 560.11-26.33 570.59-138.34 393.82-287.88 392.11' stroke='rgba(250%2c 250%2c 250%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1289.09-75.21C1101.2-65 991.48 256.04 621.52 272.4 251.56 288.76 136.2 559.98-46.05 566.4' stroke='rgba(250%2c 250%2c 250%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1166.41-24.96C989.79 59.37 992.54 604.43 736.16 629.1 479.77 653.77 521.03 541.6 305.9 541.6 90.78 541.6-14.59 628.66-124.35 629.1' stroke='rgba(250%2c 250%2c 250%2c 1)' stroke-width='2'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1009'%3e%3crect width='1440' height='700' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+  background-position: center;
+  background-size: cover;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--white);
+  width: 67%;
+  flex-grow: 1;
+}
+.d-price{
+  width: 33%;
+  margin-left: 10px;
+  font-size: 20px;
+  color: var(--dark);
+  text-align: right;
 }

@@ -1,11 +1,13 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, NavLink, Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import PatientAside from "./aside";
-import Content from "./content";
-import Appointment from "../appointment";
+import Appointment from "./appointment";
+import PatientInfo from "./info";
+import MedPatient from "./med";
 
-const PatientDetails = () => {
+const DoctorDetails = () => {
     const navigate = useNavigate()
     const location = useLocation();
     const [state, setState] = useState({
@@ -16,7 +18,7 @@ const PatientDetails = () => {
 
     const token = sessionStorage.getItem('token');
 
-    const { user, patient, patients } = location.state;
+    const { patient, doctor, doctors } = location.state;
 
     const handleLogout = async () => {
         sessionStorage.clear();
@@ -39,19 +41,9 @@ const PatientDetails = () => {
             console.error(error);
         }
     }
-    const handleDestroy = async (id) => {
-        try {
-            await axios.delete(`http://127.0.0.1:8000/api/appointments/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            });
-            fetchData();
-        } catch (error) {
-            console.error('Error deleting appointment:', error);
-        }
-    }
+
     useEffect(() => {
+        console.log(patient)
         fetchData()
     }, [])
     return (
@@ -61,10 +53,10 @@ const PatientDetails = () => {
                     <img src="/public/light-icon.png" alt="icon" />
                 </div>
                 <nav>
-                    <NavLink to='/doctor' end><i className="fa-solid fa-house"></i></NavLink>
-                    <NavLink to='/'><i className="fa-solid fa-comments"></i></NavLink>
+                    <NavLink to='/patient' end><i className="fa-solid fa-house"></i></NavLink>
+                    <NavLink to='/'><i className="fa-solid fa-bell"></i></NavLink>
                     <NavLink to='/'><i className="fa-solid fa-heart-pulse"></i></NavLink>
-                    <NavLink to='/doctor/requests'><i className="fa-solid fa-calendar-days"></i></NavLink>
+                    <NavLink to='/patient/requests'><i className="fa-solid fa-calendar-days"></i></NavLink>
                     <hr />
                     <NavLink to='/'><i className="fa-solid fa-gear"></i></NavLink>
                     <button className='logout' onClick={handleLogout}><i className="fa-solid fa-arrow-right-from-bracket"></i></button>
@@ -74,19 +66,21 @@ const PatientDetails = () => {
                 <div className="main">
                     <div className="header">
                         <div className="text">
-                            <h4>Hi Dr. {user.name},</h4>
+                            <h4>Hi {sessionStorage.getItem('name')},</h4>
                             <h2>Welcome Back!</h2>
                         </div>
                         <div className="actions">
                             <Link to='/patient/create' className="create"><i className="fa-solid fa-plus"></i></Link>
                             <div className="search">
-                                <input type="text" name="search" id="search" placeholder="Search Patients..." />
+                                <input type="text" name="search" id="search" placeholder="Search Doctors..." />
                                 <button type="button"><i className="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </div>
                     </div>
                     <div className="reminder">
-                        <Content patient={patient} apptsCount={state.appointments.length} checksCount={state.checkups.length} />
+                        {patient && (
+                            <PatientInfo patient={patient} checksCount={state.checkups.length} apptsCount={state.appointments.length} />
+                        )}
                     </div>
                     <div className="stat" style={{ marginTop: '20px' }}>
                         <h2>All Appointments</h2>
@@ -97,16 +91,29 @@ const PatientDetails = () => {
                                 ('No appointments Found')
                                 :
                                 (state.appointments.map((appt) => (
-                                    <Appointment key={appt.id} appointment={appt} handleDelete={handleDestroy} patients={patients} />
+                                    <Appointment key={appt.id} appointment={appt}  />
                                 )))
                         }
                     </div>
 
                 </div>
-                <PatientAside medications={state.medications} patient_id={patient.id} />
+                <div className="aside">
+                    <div className="stat">
+                        <h2>All Medications</h2>
+                    </div>
+                    {
+                        (state.medications.length === 0) ?
+                            ('No medications Found')
+                            :
+                            (state.medications.map((med) => (
+                                <MedPatient key={med.id} med={med} />
+                            )))
+                    }
+                </div>
             </div>
         </div>
     );
-}
 
-export default PatientDetails;
+}
+ 
+export default DoctorDetails;

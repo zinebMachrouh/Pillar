@@ -27,6 +27,12 @@ class PatientService implements PatientServiceInterface
 		}
 	}
 
+	public function getData()
+	{
+		$user = Auth::user();
+		return $this->patientRepository->getData($user);
+	}
+
 	public function store(PatientDTO $data)
 	{
 		return $this->patientRepository->store($data);

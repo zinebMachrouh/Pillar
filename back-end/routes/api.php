@@ -35,6 +35,8 @@ Route::post('/refresh', [AuthController::class, 'refresh']);
 
 Route::post('/doctors/create', [DoctorController::class, 'store']);
 
+// DOCTOR METHODS
+
 Route::get('/patients', [PatientController::class, 'index']);
 Route::post('/patient/store', [PatientController::class, 'store']);
 Route::get('/patients/{id}', [PatientController::class, 'show']);
@@ -59,9 +61,17 @@ Route::put('/checkups/{id}', [CheckupController::class, 'updateCheckup']);
 Route::delete('/checkups/{id}', [CheckupController::class, 'deleteCheckup']);
 Route::get('/checkups/appointment/{appointmentId}', [CheckupController::class, 'findCheckupByAppointment']);
 
+// ADMIN METHODS
+
 Route::get('/admin/index', [AdminController::class, 'index']);
 Route::delete('/banpatient/{patient_id}', [AdminController::class, 'banPatient']);
 Route::delete('/bandoctor/{doctor_id}', [AdminController::class, 'banDoctor']);
 Route::get('/restorepatient/{patient_id}', [AdminController::class, 'restorePatient']);
 Route::get('/restoredoctor/{doctor_id}', [AdminController::class, 'restoreDoctor']);
 Route::get('/viewstatistics', [AdminController::class, 'viewStatistics']);
+
+// PATIENT METHODS
+
+Route::get('/patient', [PatientController::class, 'getData']);
+Route::post('/appointment/create', [AppointmentController::class, 'store']);
+Route::post('/doctors/search', [DoctorController::class, 'search']);

@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use App\Services\AppointmentServiceInterface;
 use App\Http\Requests\CreateAppointmentRequest;
 use App\Http\Requests\UpdateAppointmentRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends Controller
@@ -112,5 +113,20 @@ class AppointmentController extends Controller
             'status' => 'success',
             'appointments' => $upcomingAppointments,
         ]);
+    }
+
+    public function store(Request $request) : JsonResponse
+    {
+        $dto = new AppointmentDTO(
+            Auth::user()->patient->id,
+            $request->input('doctor_id'),
+            $request->input('date'),
+            0,
+            $request->input('notes')
+        );
+
+        $appointment = $this->appointmentService->createAppointment($dto);
+
+        return $appointment;
     }
 }

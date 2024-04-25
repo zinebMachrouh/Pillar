@@ -1,8 +1,23 @@
-import { MyContext } from '../index';
+import axios from 'axios';
+import { MyContext } from "./index";
 import React, { useContext } from 'react';
 
-const AppRequests = () => {
-    const { pending, handleDelete, handleApprove } = useContext(MyContext);
+const PatientRequests = () => {
+    const { pending, fetchData } = useContext(MyContext);
+    const token = sessionStorage.getItem('token');
+
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`http://127.0.0.1:8000/api/appointments/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            fetchData();
+        } catch (error) {
+            console.error('Error deleting appointment:', error);
+        }
+    }
 
     const formatDate = (apptDate) => {
         const date = new Date(apptDate);
@@ -13,6 +28,7 @@ const AppRequests = () => {
 
         return `${dayOfWeek} ${month} ${dayOfMonth} - ${time}`;
     };
+
     return (
         <section>
             <div className="statistics">
@@ -24,14 +40,15 @@ const AppRequests = () => {
                     </div>
                 </div>
             </div>
-            <table style={{marginTop:'25px'}}>
+            <table style={{ marginTop: '25px' }}>
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Speciality</th>
+                        <th>Hospital</th>
                         <th>Date</th>
-                        <th>Notes</th>
-                        <th>Actions</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,18 +58,12 @@ const AppRequests = () => {
                     ) : (pending.map((appt) => (
                         <tr>
                             <td>#</td>
-                            <td>{appt.patient.user.name}</td>
+                            <td>{appt.doctor.user.name}</td>
+                            <td>{appt.doctor.speciality}</td>
+                            <td>{appt.doctor.hospital_affiliation}</td>
                             <td>{formatDate(appt.date)}</td>
-                            {
-                                (appt.notes) ? (
-                                    <td>{appt.notes}</td>
-                                ) : (
-                                        <td><span>-</span></td>
-                                )
-                            }
                             <td >
-                                <button type="button" className='approve' onClick={() => handleApprove(appt.id)}><i class="fa-solid fa-check"></i></button>
-                                <button type="button" className='delete' onClick={() => handleDelete(appt.id)}><i class="fa-solid fa-ban"></i></button>
+                                <button type="button" className='delete' onClick={()=>handleDelete(appt.id)}><i class="fa-solid fa-ban"></i></button>
                             </td>
                         </tr>
                     )))}
@@ -60,6 +71,7 @@ const AppRequests = () => {
             </table>
         </section>
     );
+
 }
 
-export default AppRequests;
+export default PatientRequests;

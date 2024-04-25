@@ -166,7 +166,6 @@ const DoctorIndex = () => {
                 </div>
                 <nav>
                     <NavLink to='/doctor' end><i className="fa-solid fa-house"></i></NavLink>
-                    <NavLink to='/'><i className="fa-solid fa-comments"></i></NavLink>
                     <NavLink to='/'><i className="fa-solid fa-heart-pulse"></i></NavLink>
                     <button type="button" onClick={showModal}><i class="fa-solid fa-user-plus"></i></button>
                     <NavLink to='/doctor/requests'><i className="fa-solid fa-calendar-days"></i></NavLink>
@@ -192,13 +191,12 @@ const DoctorIndex = () => {
                         </div>
                     </div>
                     <div className="reminder"></div>
-                    <MyContext.Provider value={{ user: state.user, patients: state.patients, checkups: state.checkups, appointments: state.appointments, pending: state.pending, handleDelete: handleDelete, handleApprove: handleApprove }}>
+                    <MyContext.Provider value={{ user: state.user, patients: state.patients, checkups: state.checkups, appointments: state.appointments, pending: state.pending, handleDelete: handleDelete, handleApprove: handleApprove, showModal:showModal }}>
                         <Outlet />
                     </MyContext.Provider>
                 </div>
                 <Aside appointments={state.appointments} patients={state.patients} openModal={openModal} handleDelete={handleDelete} />
             </div>
-            <button type="button" className="refresh" onClick={handleRefresh}><i class="fa-solid fa-rotate"></i></button>
             {state.showModal && <CreateModal patients={state.patients} closeModal={closeModal} />}
             {state.openModal && <AddPatient closeModal={shutModal} />}
         </div>

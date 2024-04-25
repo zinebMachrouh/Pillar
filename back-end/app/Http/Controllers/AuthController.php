@@ -33,9 +33,9 @@ class AuthController extends Controller
         if ($role === 'doctor') {
             $redirect = 'doctor';
         } elseif ($role === 'admin') {
-            $redirect = 'admin/dashboard';
+            $redirect = 'admin';
         }elseif ($role === 'patient'){
-            $redirect = 'patient/dashboard';
+            $redirect = 'patient';
         } else {
             $redirect = '404';
         }
