@@ -1,127 +1,205 @@
 import { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import _ from 'lodash';
 
 const ModifyInfo = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone_number: '',
-        gender: '',
-        birthday: '',
-        address: '',
-        cin: '',
-        emergency_contact_name: '',
-        emergency_contact_number: '',
-        insurance_provider: '',
-        insurance_policy_number: '',
-        last_visit: '',
-        medical_history: '',
-        allergies: '',
-    });
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+    const location = useLocation();
+    const navigate = useNavigate();
 
+    const { user } = location.state;
+    const userRole = user.user.role_id;
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [userData, setUserData] = useState({
+        name: '' || user.user.name,
+        email: '' || user.user.email,
+        cin: '' || user.user.cin,
+        password: '' || user.user.password,
+        phone_number: '' || user.user.phone_number,
+    });
+
+    const [patientData, setPatientData] = useState({
+        ...userData,
+        gender: '' || user.gender,
+        birthday: '' || user.birthday,
+        address: '' || user.address,
+        emergency_contact_name: '' || user.emergency_contact_name,
+        emergency_contact_number: '' || user.emergency_contact_number,
+        insurance_provider: '' || user.insurance_provider,
+        insurance_policy_number: '' || user.insurance_policy_number,
+        allergies: '' || user.allergies,
+    })
+
+    const [doctorData, setDoctorData] = useState({
+        ...userData,
+        gender: '' || user.gender,
+        address: '' || user.address,
+        speciality: '' || user.speciality,
+        qualifications: '' || user.qualifications,
+        license_number: '' || user.license_number,
+        hospital_affiliation: '' || user.hospital_affiliation,
+        experience: '' || user.experience,
+        availability: '' || user.availability,
+        working_hours: '' || user.working_hours,
+        appointment_fee: '' || user.appointment_fee,
+        about: '' || user.about,
+    })
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (userRole === 1) {
+            setUserData({ ...userData, [name]: value });
+        } else if (userRole === 3) {
+            setPatientData({ ...patientData, [name]: value });
+        } else if (userRole === 2) {
+            setDoctorData({ ...doctorData, [name]: value });
+        }
+    };
+    console.log(patientData.name)
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = sessionStorage.getItem('token');
 
-        const response = await axios.post('http://127.0.0.1:8000/api/patient/store', formData, {
+        let dataToUpdate;
+        let endpoint;
+
+        switch (userRole) {
+            case 1:
+                dataToUpdate = userData;
+                endpoint = 'admin';
+                break;
+            case 2:
+                dataToUpdate = doctorData;
+                endpoint = 'doctor';
+                break;
+            case 3:
+                dataToUpdate = patientData;
+                endpoint = 'patient';
+                break;
+            default:
+                return;
+        }
+
+        await axios.post(`http://127.0.0.1:8000/api/${endpoint}/update`, dataToUpdate, {
             headers: {
                 'Authorization': `Bearer ${token}`,
             }
         });
-        window.location.href = `/doctor`;
-
+        navigate(`/${sessionStorage.getItem('redirect')}`);
     };
-    return (  
-        <div className="details-body" id="login-body">
-            <Link to='/doctor' className="back">
-                <i className="fa-solid fa-arrow-left"></i>
-            </Link>
-            <div className="form-container" id='createP'>
-                <h2 className="title" style={{ color: '#3498DB' }}>Create Patient</h2>
-                <form onSubmit={handleSubmit} className="doctor-create" style={{ marginTop: '15px' }}>
+
+    const renderFields = () => {
+        if (userRole === 3) {
+            return (
+                <>
                     <div className="group">
-                        <div className="input-group">
-                            <label htmlFor="name">Name</label>
-                            <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} placeholder="Enter Name" />
-                        </div>
                         <div className="input-group">
                             <label htmlFor="gender">Gender</label>
                             <select name="gender" id="gender" onChange={handleChange}>
+                                <option value={patientData.gender} selected hidden>{_.capitalize(patientData.gender)}</option>
                                 <option value="" hidden>Select Gender</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                             </select>
                         </div>
-                    </div>
-                    <div className="group">
-                        <div className="input-group">
-                            <label htmlFor="email">Email</label>
-                            <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} placeholder="Enter Email" />
-                        </div>
-                        <div className="input-group">
-                            <label htmlFor="phone_number">Phone Number</label>
-                            <input type="number" name="phone_number" id="phone_number" value={formData.phone_number} onChange={handleChange} placeholder="Enter Phone Number" />
-                        </div>
-                    </div>
-                    <div className="group">
-                        <div className="input-group">
-                            <label htmlFor="cin">Cin</label>
-                            <input type="text" name="cin" id="cin" value={formData.cin} onChange={handleChange} placeholder="Enter Cin" />
-                        </div>
                         <div className="input-group">
                             <label htmlFor="address">Address</label>
-                            <input type="text" name="address" id="address" value={formData.address} onChange={handleChange} placeholder="Enter Address" />
+                            <input type="text" name="address" id="address" value={patientData.address} onChange={handleChange} placeholder="Enter Address" />
                         </div>
                     </div>
-
                     <div className="group">
                         <div className="input-group">
                             <label htmlFor="birthday">Birthday</label>
-                            <input type="date" name="birthday" id="birthday" value={formData.birthday} onChange={handleChange} placeholder="Enter Birthday" />
+                            <input type="date" name="birthday" id="birthday" value={patientData.birthday} onChange={handleChange} placeholder="Enter Birthday" />
                         </div>
-
                         <div className="input-group">
-                            <label htmlFor="last_visit">Last Visit</label>
-                            <input type="date" name="last_visit" id="last_visit" value={formData.last_visit} onChange={handleChange} placeholder="Enter Last Visit" />
+                            <label htmlFor="allergies">Allergies</label>
+                            <input type="text" name="allergies" id="allergies" value={patientData.allergies} onChange={handleChange} placeholder="Enter Allergies" />
                         </div>
                     </div>
-
-                    <div className="input-group">
-                        <label htmlFor="medical_history">Medical History</label>
-                        <input type="text" name="medical_history" id="medical_history" value={formData.medical_history} onChange={handleChange} placeholder="Enter Medical History" />
-                    </div>
-
                     <div className="group">
                         <div className="input-group">
-                            <label htmlFor="emergency_contact_name">Emergency Contact Name</label>
-                            <input type="text" name="emergency_contact_name" id="emergency_contact_name" value={formData.emergency_contact_name} onChange={handleChange} placeholder="Contact Name" />
+                            <label htmlFor="emergency_contact_name">Emergency Name</label>
+                            <input type="text" name="emergency_contact_name" id="emergency_contact_name" value={patientData.emergency_contact_name} onChange={handleChange} placeholder="Contact Name" />
                         </div>
 
                         <div className="input-group">
-                            <label htmlFor="emergency_contact_number">Emergency Contact Number</label>
-                            <input type="number" name="emergency_contact_number" id="emergency_contact_number" value={formData.emergency_contact_number} onChange={handleChange} placeholder="Contact Number" />
+                            <label htmlFor="emergency_contact_number">Emergency Number</label>
+                            <input type="number" name="emergency_contact_number" id="emergency_contact_number" value={patientData.emergency_contact_number} onChange={handleChange} placeholder="Contact Number" />
                         </div>
-                    </div>
-                    <div className="input-group">
-                        <label htmlFor="allergies">Allergies</label>
-                        <input type="text" name="allergies" id="allergies" value={formData.allergies} onChange={handleChange} placeholder="Enter Allergies" />
                     </div>
                     <div className="group">
                         <div className="input-group">
                             <label htmlFor="insurance_provider">Insurance Provider</label>
-                            <input type="text" name="insurance_provider" id="insurance_provider" value={formData.insurance_provider} onChange={handleChange} placeholder="Enter Insurance Provider" />
+                            <input type="text" name="insurance_provider" id="insurance_provider" value={patientData.insurance_provider} onChange={handleChange} placeholder="Enter Insurance Provider" />
                         </div>
 
                         <div className="input-group">
                             <label htmlFor="insurance_policy_number">Insurance Number</label>
-                            <input type="number" name="insurance_policy_number" id="insurance_policy_number" value={formData.insurance_policy_number} onChange={handleChange} placeholder="Enter Insurance Number" />
+                            <input type="number" name="insurance_policy_number" id="insurance_policy_number" value={patientData.insurance_policy_number} onChange={handleChange} placeholder="Enter Insurance Number" />
                         </div>
                     </div>
-                    <button type="submit" className="sign">Submit</button>
+                </>
+            );
+        } else if (userRole === 2) {
+            return (
+                <>
+                    {/* Doctor fields */}
+                </>
+            );
+        } else {
+            return ('')
+        }
+    };
+
+    return (
+        <div className="details-body" id="login-body">
+            <Link to={`/${sessionStorage.getItem('redirect')}`} className="back">
+                <i className="fa-solid fa-arrow-left"></i>
+            </Link>
+            <div className="form-container" id='createP'>
+                <h2 className="title" style={{ color: '#3498DB' }}>Modify Information</h2>
+                
+                <form onSubmit={handleSubmit} className="doctor-create " style={{ marginTop: '15px' }}>
+                    <div className="updateForm">
+                        <div className="right-update">
+                            <div className="input-group">
+                                <label htmlFor="name">Name</label>
+                                <input type="text" name="name" id="name" value={userData.name} onChange={handleChange} placeholder="Enter Name" />
+                            </div>
+                            <div className="input-group">
+                                <label htmlFor="email">Email</label>
+                                <input type="email" name="email" id="email" value={userData.email} onChange={handleChange} placeholder="Enter Email" />
+                            </div>
+                            <div className="input-group">
+                                <label htmlFor="cin">Cin</label>
+                                <input type="text" name="cin" id="cin" value={userData.cin} onChange={handleChange} placeholder="Enter Cin" />
+                            </div>
+                            <div className="input-group">
+                                <label htmlFor="phone_number">Phone Number</label>
+                                <input type="number" name="phone_number" id="phone_number" value={userData.phone_number} onChange={handleChange} placeholder="Enter Phone Number" />
+                            </div>
+                            {
+                                (showPassword) ? (
+                                    <div className="group" >
+                                        <div className="input-group">
+                                            <label htmlFor="password">Password</label>
+                                            <input type="password" name="password" id="password" value={userData.password} onChange={handleChange} placeholder="Enter Password" />
+                                        </div>
+                                        <div className="input-group">
+                                            <label htmlFor="confirm">Confirm Password</label>
+                                            <input type="password" name="confirm" id="confirm" onChange={handleChange} placeholder="Confirm Password" />
+                                        </div>
+                                    </div>
+                                ) : (<button type="button" onClick={() => setShowPassword(!showPassword)}>Update Password...</button>)
+                            }
+                        </div>
+                        <div className="left-update">
+                            {renderFields()}
+                        </div>
+                    </div>
+                    <button type="submit" className="updateBtn">Update Information</button>
                 </form>
             </div>
         </div>

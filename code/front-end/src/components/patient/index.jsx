@@ -84,10 +84,6 @@ const PatienDashboard = () => {
         }));
     };
 
-    const handleNavigate = () => {
-        navigate('/modify/user',{state:{patient: state.patient}})
-    }
-
     return (
         <div className="dashboard">
             <div className="sidebar">
@@ -121,7 +117,7 @@ const PatienDashboard = () => {
                     </div>
                     <div className="reminder">
                         {state.patient.user && (
-                            <PatientInfo patient={state.patient} checksCount={state.checkups.length} apptsCount={state.appointments.length} handleNavigate={handleNavigate} />
+                            <PatientInfo patient={state.patient} checksCount={state.checkups.length} apptsCount={state.appointments.length} />
                         )}
                     </div>
                     <MyContext.Provider value={{ doctors: state.doctors, patient:state.patient, pending:state.pending, fetchData:fetchData}}>

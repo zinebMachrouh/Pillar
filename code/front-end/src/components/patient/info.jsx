@@ -1,4 +1,13 @@
-const PatientInfo = ({ patient, checksCount, apptsCount, handleNavigate }) => {
+import { useNavigate } from "react-router-dom";
+
+const PatientInfo = ({ patient, checksCount, apptsCount }) => {
+    const navigate = useNavigate();
+
+    const handleNavigate = () => {
+        navigate('/modify/user', { state: { user: patient } })
+    }
+
+
     return (
         <div className="content">
             <div className="rem-right">

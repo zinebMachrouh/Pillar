@@ -46,6 +46,11 @@ const DoctorDetails = () => {
         console.log(patient)
         fetchData()
     }, [])
+
+    const handleNavigate = () => {
+        navigate('/modify/user', { state: { user: state.patient } })
+    }
+
     return (
         <div className="dashboard">
             <div className="sidebar">

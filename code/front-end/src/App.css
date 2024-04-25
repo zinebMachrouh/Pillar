@@ -434,7 +434,7 @@
     font-size: 16px;
 }
 #createP{
-  width: 540px !important;
+  width: fit-content !important;
 }
 
 .aside-header{
@@ -1370,4 +1370,54 @@ table tbody td:last-child{
   font-size: 20px;
   color: var(--dark);
   text-align: right;
+}
+.updateForm{
+  display: flex;
+  align-items: center;
+}
+.right-update{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 400px;
+  padding-right: 25px;
+}
+.left-update{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 400px;
+  padding-left: 25px;
+  border-left: solid 2px #9ca3af72;
+}
+.right-update .group {
+  margin: 0px;
+}
+.left-update .group {
+  margin: 10px 0px;
+}
+.right-update button{
+  background-color: transparent;
+  color: var(--main);
+  padding: 15px 0px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: underline 1px ;
+  text-align: left;
+}
+.updateBtn{
+  background-color: var(--main);
+  color: var(--white);
+  padding: 10px 40px;
+  border: none;
+  border-radius: 7px;
+  font-size: 16px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+form:has(.updateBtn){
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
