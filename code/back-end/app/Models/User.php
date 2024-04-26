@@ -44,6 +44,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(Doctor::class);
     }
 
+    public function verificationCode()
+    {
+        return $this->hasMany(VerificationCode::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

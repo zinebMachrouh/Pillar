@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('verification_codes', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('code');
+            $table->timestamp('expires_at')->nullable();
+            $table->boolean('used')->default(false);
+            $table->timestamps();       
         });
     }
 

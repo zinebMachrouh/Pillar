@@ -9,6 +9,7 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\CheckupController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\VerificationCodeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,3 +79,5 @@ Route::get('/patient', [PatientController::class, 'getData']);
 Route::post('/appointment/create', [AppointmentController::class, 'store']);
 Route::post('/doctors/search', [DoctorController::class, 'search']);
 Route::put('/patient/update/{id}', [PatientController::class, 'update']);
+Route::post('/generatecode', [VerificationCodeController::class, 'generateCode']);
+Route::post('/verifycode', [VerificationCodeController::class, 'verifyCode']);
