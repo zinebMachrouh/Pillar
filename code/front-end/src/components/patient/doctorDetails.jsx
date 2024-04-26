@@ -6,6 +6,7 @@ import PatientAside from "./aside";
 import Appointment from "./appointment";
 import PatientInfo from "./info";
 import MedPatient from "./med";
+import DoctorInfo from "../doctor/info";
 
 const DoctorDetails = () => {
     const navigate = useNavigate()
@@ -84,7 +85,7 @@ const DoctorDetails = () => {
                     </div>
                     <div className="reminder">
                         {patient && (
-                            <PatientInfo patient={patient} checksCount={state.checkups.length} apptsCount={state.appointments.length} />
+                            <DoctorInfo doctor={doctor} checksCount={state.checkups.length} apptsCount={state.appointments.length} />
                         )}
                     </div>
                     <div className="stat" style={{ marginTop: '20px' }}>

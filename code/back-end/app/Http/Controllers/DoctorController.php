@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\DoctorDTO;
 use App\Http\Requests\DoctorStoreRequest;
+use App\Http\Requests\ModifyDoctorRequest;
 use App\Models\Doctor;
 use App\Models\User;
+use App\Services\DoctorServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DoctorController extends Controller
 {
-    public function __construct()
+    private $doctorService;
+    public function __construct(DoctorServiceInterface $doctorService)
     {
-        $this->middleware('auth:api');
+        $this->doctorService = $doctorService;
+        // $this->middleware('auth:api');
+        
     }
     public function store(DoctorStoreRequest $request)
     {
@@ -47,5 +53,14 @@ class DoctorController extends Controller
             'status' => 'success',
             'doctors' => $doctors,
         ], 201);
+    }
+
+    public function update(ModifyDoctorRequest $request, $id)
+    {
+        $data = $request->validated();
+
+        $response = $this->doctorService->update($data, $id);
+
+        return response()->json($response, 201);
     }
 }

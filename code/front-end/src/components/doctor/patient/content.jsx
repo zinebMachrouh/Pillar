@@ -14,7 +14,6 @@ const Content = ({ patient, checksCount, apptsCount }) => {
                         <span>Checkups</span>
                     </div>
                 </div>
-                <button type="button">Schedule Appointment</button>
             </div>
             <div className="rem-left">
                 <div className="rem-top">

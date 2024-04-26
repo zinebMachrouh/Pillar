@@ -36,6 +36,8 @@ Route::post('/refresh', [AuthController::class, 'refresh']);
 Route::post('/doctors/create', [DoctorController::class, 'store']);
 
 // DOCTOR METHODS
+Route::put('/doctor/update/{id}', [DoctorController::class, 'update']);
+
 
 Route::get('/patients', [PatientController::class, 'index']);
 Route::post('/patient/store', [PatientController::class, 'store']);
@@ -75,3 +77,4 @@ Route::get('/viewstatistics', [AdminController::class, 'viewStatistics']);
 Route::get('/patient', [PatientController::class, 'getData']);
 Route::post('/appointment/create', [AppointmentController::class, 'store']);
 Route::post('/doctors/search', [DoctorController::class, 'search']);
+Route::put('/patient/update/{id}', [PatientController::class, 'update']);

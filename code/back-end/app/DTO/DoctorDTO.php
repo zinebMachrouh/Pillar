@@ -5,11 +5,10 @@ namespace App\DTO;
 class DoctorDTO extends UserDTO
 {
     public $gender;
-    public $birthday;
     public $address;
     public $speciality;
     public $qualifications;
-    public $license_Number;
+    public $license_number;
     public $hospital_affiliation;
     public $experience;
     public $availability;
@@ -18,16 +17,15 @@ class DoctorDTO extends UserDTO
     public $about;
     public $user_id;
 
-    public function __construct($name, $email,$cin, $password, $phone_number, $roleId, $gender, $birthday, $address, $speciality, $qualifications, $license_Number, $hospital_affiliation, $experience, $availability, $working_hours, $appointment_fee, $about, $user_id)
+    public function __construct($name, $email,$cin, $password, $phone_number, $roleId, $gender, $address, $speciality, $qualifications, $license_number, $hospital_affiliation, $experience, $availability, $working_hours, $appointment_fee, $about, $user_id)
     {
         parent::__construct($name, $email,$cin, $password, $phone_number, $roleId);
 
         $this->gender = $gender;
-        $this->birthday = $birthday;
         $this->address = $address;
         $this->speciality = $speciality;
         $this->qualifications = $qualifications;
-        $this->license_Number = $license_Number;
+        $this->license_number = $license_number;
         $this->hospital_affiliation = $hospital_affiliation;
         $this->experience = $experience;
         $this->availability = $availability;
@@ -47,11 +45,10 @@ class DoctorDTO extends UserDTO
             $data['phone_number'],
             $data['role_id'],
             $data['gender'],
-            $data['birthday'],
             $data['address'],
             $data['speciality'],
             $data['qualifications'],
-            $data['license_Number'],
+            $data['license_number'],
             $data['hospital_affiliation'],
             $data['experience'],
             $data['availability'],
@@ -67,11 +64,10 @@ class DoctorDTO extends UserDTO
         $parentArray = parent::toArray();
         return array_merge($parentArray,[
             'gender' => $this->gender,
-            'birthday' => $this->birthday,
             'address' => $this->address,
             'speciality' => $this->speciality,
             'qualifications' => $this->qualifications,
-            'license_Number' => $this->license_Number,
+            'license_number' => $this->license_number,
             'hospital_affiliation' => $this->hospital_affiliation,
             'experience' => $this->experience,
             'availability' => $this->availability,

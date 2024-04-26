@@ -1379,7 +1379,7 @@ table tbody td:last-child{
   display: flex;
   flex-direction: column;
   gap: 15px;
-  width: 400px;
+  width: 300px;
   padding-right: 25px;
 }
 .left-update{

@@ -10,12 +10,10 @@ const ModifyInfo = () => {
     const { user } = location.state;
     const userRole = user.user.role_id;
 
-    const [showPassword, setShowPassword] = useState(false);
     const [userData, setUserData] = useState({
         name: '' || user.user.name,
         email: '' || user.user.email,
         cin: '' || user.user.cin,
-        password: '' || user.user.password,
         phone_number: '' || user.user.phone_number,
     });
 
@@ -40,7 +38,6 @@ const ModifyInfo = () => {
         license_number: '' || user.license_number,
         hospital_affiliation: '' || user.hospital_affiliation,
         experience: '' || user.experience,
-        availability: '' || user.availability,
         working_hours: '' || user.working_hours,
         appointment_fee: '' || user.appointment_fee,
         about: '' || user.about,
@@ -52,11 +49,13 @@ const ModifyInfo = () => {
             setUserData({ ...userData, [name]: value });
         } else if (userRole === 3) {
             setPatientData({ ...patientData, [name]: value });
+            setUserData({ ...userData, [name]: value });
         } else if (userRole === 2) {
             setDoctorData({ ...doctorData, [name]: value });
+            setUserData({ ...userData, [name]: value });
         }
     };
-    console.log(patientData.name)
+    console.log(user.user.id)
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = sessionStorage.getItem('token');
@@ -81,7 +80,7 @@ const ModifyInfo = () => {
                 return;
         }
 
-        await axios.post(`http://127.0.0.1:8000/api/${endpoint}/update`, dataToUpdate, {
+        await axios.put(`http://127.0.0.1:8000/api/${endpoint}/update/${user.user.id}`, dataToUpdate, {
             headers: {
                 'Authorization': `Bearer ${token}`,
             }
@@ -92,7 +91,7 @@ const ModifyInfo = () => {
     const renderFields = () => {
         if (userRole === 3) {
             return (
-                <>
+                <div className="left-update">
                     <div className="group">
                         <div className="input-group">
                             <label htmlFor="gender">Gender</label>
@@ -140,13 +139,72 @@ const ModifyInfo = () => {
                             <input type="number" name="insurance_policy_number" id="insurance_policy_number" value={patientData.insurance_policy_number} onChange={handleChange} placeholder="Enter Insurance Number" />
                         </div>
                     </div>
-                </>
+                </div>
             );
         } else if (userRole === 2) {
             return (
-                <>
-                    {/* Doctor fields */}
-                </>
+                <div className="left-update">
+                    <div className="group">
+                        <div className="input-group">
+                            <label htmlFor="gender">Gender</label>
+                            <select name="gender" id="gender" onChange={handleChange}>
+                                <option value="" hidden>Select Gender</option>
+                                <option value={doctorData.gender} hidden selected>{doctorData.gender}</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+
+                        <div className="input-group">
+                            <label htmlFor="speciality">Speciality</label>
+                            <input type="text" name="speciality" id="speciality" value={doctorData.speciality} onChange={handleChange} placeholder="Enter Speciality" />
+                        </div>
+                    </div>
+                    <div className="group">
+                        <div className="input-group">
+                            <label htmlFor="license_number">License Number</label>
+                            <input type="text" name="license_number" id="license_number" value={doctorData.license_number} onChange={handleChange} placeholder="Enter License Number" />
+                        </div>
+
+                        <div className="input-group">
+                            <label htmlFor="hospital_affiliation">Hospital Affiliation</label>
+                            <input type="text" name="hospital_affiliation" id="hospital_affiliation" value={doctorData.hospital_affiliation} onChange={handleChange} placeholder="Enter Hospital Affiliation" />
+                        </div>
+                    </div>
+                    <div className="group">
+                        <div className="input-group">
+                            <label htmlFor="qualifications">Qualifications</label>
+                            <input type="text" name="qualifications" id="qualifications" value={doctorData.qualifications} onChange={handleChange} placeholder="Enter Qualifications" />
+                        </div>
+
+                        <div className="input-group">
+                            <label htmlFor="experience">Experience</label>
+                            <input type="number" name="experience" id="experience" value={doctorData.experience} onChange={handleChange} placeholder="Enter Experience" />
+                        </div>
+                    </div>
+                    <div className="group">
+                        <div className="input-group">
+                            <label htmlFor="working_hours">Working Hours</label>
+                            <input type="text" name="working_hours" id="working_hours" value={doctorData.working_hours} onChange={handleChange} placeholder="Enter Working Hours" />
+                        </div>
+
+                        <div className="input-group">
+                            <label htmlFor="appointment_fee">Appointment Fee</label>
+                            <input type="number" name="appointment_fee" id="appointment_fee" value={doctorData.appointment_fee} onChange={handleChange} placeholder="Price in MAD" />
+                        </div>
+                    </div>
+                    <div className="group">
+                        <div className="input-group">
+                            <label htmlFor="address">Address</label>
+                            <input type="text" name="address" id="address" value={doctorData.address} onChange={handleChange} placeholder="Enter Address" />
+                        </div>
+
+                        <div className="input-group">
+                            <label htmlFor="about">About</label>
+                            <input type="text" name="about" id="about" value={doctorData.about} onChange={handleChange} placeholder="Tell Us About Yourself <3" />
+                        </div>
+                    </div>
+                </div>
             );
         } else {
             return ('')
@@ -160,7 +218,7 @@ const ModifyInfo = () => {
             </Link>
             <div className="form-container" id='createP'>
                 <h2 className="title" style={{ color: '#3498DB' }}>Modify Information</h2>
-                
+
                 <form onSubmit={handleSubmit} className="doctor-create " style={{ marginTop: '15px' }}>
                     <div className="updateForm">
                         <div className="right-update">
@@ -180,24 +238,9 @@ const ModifyInfo = () => {
                                 <label htmlFor="phone_number">Phone Number</label>
                                 <input type="number" name="phone_number" id="phone_number" value={userData.phone_number} onChange={handleChange} placeholder="Enter Phone Number" />
                             </div>
-                            {
-                                (showPassword) ? (
-                                    <div className="group" >
-                                        <div className="input-group">
-                                            <label htmlFor="password">Password</label>
-                                            <input type="password" name="password" id="password" value={userData.password} onChange={handleChange} placeholder="Enter Password" />
-                                        </div>
-                                        <div className="input-group">
-                                            <label htmlFor="confirm">Confirm Password</label>
-                                            <input type="password" name="confirm" id="confirm" onChange={handleChange} placeholder="Confirm Password" />
-                                        </div>
-                                    </div>
-                                ) : (<button type="button" onClick={() => setShowPassword(!showPassword)}>Update Password...</button>)
-                            }
                         </div>
-                        <div className="left-update">
-                            {renderFields()}
-                        </div>
+                        {renderFields()}
+
                     </div>
                     <button type="submit" className="updateBtn">Update Information</button>
                 </form>

@@ -47,4 +47,8 @@ class PatientService implements PatientServiceInterface
 	{
 		return $this->patientRepository->search($data);
 	}
+	public function update(array $data, $id)
+	{
+		return $this->patientRepository->update($data, $id);
+	}
 }

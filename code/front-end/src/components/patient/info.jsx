@@ -67,7 +67,8 @@ const PatientInfo = ({ patient, checksCount, apptsCount }) => {
                     }</span>
                 </div>
             </div>
-        </div>);
+        </div>
+    );
 }
 
 export default PatientInfo;

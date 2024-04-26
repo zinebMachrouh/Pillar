@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\DTO\PatientDTO;
+use App\Http\Requests\ModifyPatientRequest;
 use App\Http\Requests\PatientRequest;
 use App\Models\User;
 use App\Services\PatientServiceInterface;
@@ -67,5 +68,13 @@ class PatientController extends Controller
 
         $doctor->patients()->attach($user->patient->id);
         return response()->json(['message' => 'Patient attached successfully']);
+    }
+    public function update(ModifyPatientRequest $request, $id)
+    {
+        $data = $request->validated();
+
+        $response = $this->patientService->update($data, $id);
+
+        return response()->json($response, 201);
     }
 }

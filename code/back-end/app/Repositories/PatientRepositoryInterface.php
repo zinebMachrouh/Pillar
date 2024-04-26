@@ -13,4 +13,7 @@ interface PatientRepositoryInterface
 
     public function show($id);
 
-    public function search(array $data);}
+    public function search(array $data);
+
+    public function update(array $data,$id);
+}

@@ -4,6 +4,7 @@ import axios from 'axios';
 import Aside from "./aside";
 import CreateModal from "./createModal";
 import AddPatient from "./addModal";
+import DoctorInfo from "./info";
 
 export const MyContext = createContext();
 const DoctorIndex = () => {
@@ -31,7 +32,7 @@ const DoctorIndex = () => {
             });
             setState({
                 patients: [...response.data.patients],
-                user: response.data.user,
+                user: response.data.doctor,
                 stats: response.data.statistics,
                 appointments: [...response.data.appointments],
                 checkups: [...response.data.checkups],
@@ -178,7 +179,7 @@ const DoctorIndex = () => {
                 <div className="main">
                     <div className="header">
                         <div className="text">
-                            <h4>Hi Dr. {state.user.name},</h4>
+                            <h4>Hi Dr. {sessionStorage.getItem('name')},</h4>
                             <h2>Welcome Back!</h2>
                         </div>
                         <div className="actions">
@@ -190,7 +191,11 @@ const DoctorIndex = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="reminder"></div>
+                    <div className="reminder">
+                        {state.user.user && (
+                            <DoctorInfo doctor={state.user} checksCount={state.checkups.length} apptsCount={state.appointments.length}/>
+                        )}
+                    </div>
                     <MyContext.Provider value={{ user: state.user, patients: state.patients, checkups: state.checkups, appointments: state.appointments, pending: state.pending, handleDelete: handleDelete, handleApprove: handleApprove, showModal:showModal }}>
                         <Outlet />
                     </MyContext.Provider>
