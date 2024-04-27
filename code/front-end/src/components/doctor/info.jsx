@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 const DoctorInfo = ({ doctor, checksCount, apptsCount }) => {
+    const role = sessionStorage.getItem('role');
     const navigate = useNavigate();
 
     const handleNavigate = () => {
@@ -21,12 +22,7 @@ const DoctorInfo = ({ doctor, checksCount, apptsCount }) => {
                         <span>Checkups</span>
                     </div>
                 </div> 
-                {
-                    
-                    (sessionStorage.getItem('role') === 2) ? (
-                        <button type="button" onClick={handleNavigate}>Modify Information</button>
-                    ) : ('')
-                }
+                <button type="button" onClick={handleNavigate}>Modify Information</button>
             </div>
             <div className="rem-left">
                 <div className="rem-top">

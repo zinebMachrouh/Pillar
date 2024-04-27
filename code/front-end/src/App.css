@@ -1270,13 +1270,17 @@ table tbody td:last-child{
 }
 .doctors{
   margin-top: 15px;
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 .d-card {
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
   margin-bottom: 2rem;
-  width: 320px;
+  width: 380px;
   display: flex;
   flex-direction: column;
   border-radius: 10px;

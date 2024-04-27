@@ -8,7 +8,7 @@ const Main = () => {
         <section>
             <div className="statistics">
                 <h2>My Patients</h2>
-                <Stats patients={patients} appointments={appointments} checkups={checkups} />
+                <Stats patients={patients} />
             </div>
             <div className="patients">
                 {patients.length === 0 ? (

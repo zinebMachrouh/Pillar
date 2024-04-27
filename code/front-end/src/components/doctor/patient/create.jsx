@@ -66,7 +66,7 @@ const PatientCreate = () => {
                         </div>
                         <div className="input-group">
                             <label htmlFor="phone_number">Phone Number</label>
-                            <input type="number" name="phone_number" id="phone_number" value={formData.phone_number} onChange={handleChange} placeholder="Enter Phone Number" />
+                            <input type="tel" name="phone_number" id="phone_number" value={formData.phone_number} onChange={handleChange} placeholder="Enter Phone Number" />
                         </div>
                     </div>
                     <div className="group">
@@ -105,7 +105,7 @@ const PatientCreate = () => {
 
                         <div className="input-group">
                             <label htmlFor="emergency_contact_number">Emergency Contact Number</label>
-                            <input type="number" name="emergency_contact_number" id="emergency_contact_number" value={formData.emergency_contact_number} onChange={handleChange} placeholder="Contact Number" />
+                            <input type="tel" name="emergency_contact_number" id="emergency_contact_number" value={formData.emergency_contact_number} onChange={handleChange} placeholder="Contact Number" />
                         </div>
                     </div>
                     <div className="input-group">

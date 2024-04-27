@@ -66,7 +66,7 @@ const SignUp = () => {
                     </div>
                     <div className="input-group">
                         <label htmlFor="phone_number">Phone Number</label>
-                        <input type="number" name="phone_number" id="phone_number" value={registerData.phone_number} onChange={handleInputChange} placeholder="Enter Phone Number" />
+                        <input type="tel" name="phone_number" id="phone_number" value={registerData.phone_number} onChange={handleInputChange} placeholder="Enter Phone Number" />
                     </div>
 
                     <button className="sign" type='submit'>Register</button>

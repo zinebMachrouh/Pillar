@@ -67,12 +67,23 @@ class PatientRepository implements PatientRepositoryInterface
 		return ['status' => 'success', 'message' => 'Patient created successfully', 'patient' => $patient];
 	}
 
-	public function show($id)
+	public function show($id,$doctor)
 	{
 		$patient = Patient::findOrFail($id);
-		$medications = $patient->meds;
-		$appointments = $patient->appointments()->with('patient.user', 'checkup', 'doctor.user')->latest('updated_at')->where('status', '!=', 0)->get();
-		$checkups = $patient->checkups()->orderBy('created_at', 'desc')->limit(3)->get();
+		$medications = $patient->meds()
+			->where('doctor_id', $doctor)
+			->get();
+		$appointments = $patient->appointments()
+			->with('patient.user', 'checkup', 'doctor.user')
+			->latest('updated_at')
+			->where('status', '!=', 0)
+			->where('doctor_id', $doctor)
+			->get();
+
+		$checkups = $patient->checkups()
+			->orderBy('created_at', 'desc')
+			->where('doctor_id', $doctor)
+			->get();
 		return ['medications' => $medications, 'appointments' => $appointments, 'checkups' => $checkups];
 	}
 

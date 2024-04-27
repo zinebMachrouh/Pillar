@@ -14,7 +14,7 @@ const DoctorCreate = () => {
         availability: '',
         working_hours: '',
         appointment_fee: '',
-        about: ''
+        about: 'I am a dedicated doctor committed to providing quality care.'
     });
     useEffect(() => {
         window.history.pushState(null, null, window.location.href);
@@ -36,6 +36,7 @@ const DoctorCreate = () => {
             }
         });
         sessionStorage.setItem('logged', true);
+        sessionStorage.setItem('redirect', response.data.redirect);
         window.location.href = `/${response.data.redirect}`;
 
     };

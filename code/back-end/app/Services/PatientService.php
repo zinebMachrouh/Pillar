@@ -38,9 +38,9 @@ class PatientService implements PatientServiceInterface
 		return $this->patientRepository->store($data);
 	}
 
-	public function show($id)
+	public function show($id, $doctor)
 	{
-		return $this->patientRepository->show($id);
+		return $this->patientRepository->show($id, $doctor);
 	}
 
 	public function search(array $data)

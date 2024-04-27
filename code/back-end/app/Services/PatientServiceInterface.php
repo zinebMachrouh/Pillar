@@ -11,9 +11,9 @@ interface PatientServiceInterface
 
     public function store(PatientDTO $data);
 
-    public function show($id);
+    public function show($id, $doctor);
 
     public function search(array $data);
-    
+
     public function update(array $data, $id);
 }

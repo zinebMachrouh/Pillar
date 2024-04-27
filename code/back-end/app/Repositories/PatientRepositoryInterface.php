@@ -11,7 +11,7 @@ interface PatientRepositoryInterface
 
     public function store(PatientDTO $data);
 
-    public function show($id);
+    public function show($id, $doctor);
 
     public function search(array $data);
 

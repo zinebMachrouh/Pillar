@@ -13,7 +13,7 @@ class AppointmentRepository implements AppointmentRepositoryInterface
 {
 	public function create(AppointmentDTO $dto)
 	{
-		$taken = Appointment::where('doctor_id', $dto->doctor_id)->where('date', $dto->date)->first();
+		$taken = Appointment::where('patient_id', $dto->patient_id)->where('date', $dto->date)->first();
 
 		if ($taken) {
 			return response()->json(['message' => 'Selected date and time are already taken.'], 422);

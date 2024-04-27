@@ -74,7 +74,7 @@ const PatientDetails = () => {
                 <div className="main">
                     <div className="header">
                         <div className="text">
-                            <h4>Hi Dr. {user.name},</h4>
+                            <h4>Hi Dr. {sessionStorage.getItem('name')},</h4>
                             <h2>Welcome Back!</h2>
                         </div>
                         <div className="actions">

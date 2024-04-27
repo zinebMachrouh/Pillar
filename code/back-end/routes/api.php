@@ -42,7 +42,7 @@ Route::put('/doctor/update/{id}', [DoctorController::class, 'update']);
 
 Route::get('/patients', [PatientController::class, 'index']);
 Route::post('/patient/store', [PatientController::class, 'store']);
-Route::get('/patients/{id}', [PatientController::class, 'show']);
+Route::get('/patients/{id}/{doctor}', [PatientController::class, 'show']);
 Route::post('/patients/search', [PatientController::class, 'search']);
 Route::post('/patients/attach', [PatientController::class, 'addByCin']);
 

@@ -37,9 +37,9 @@ class PatientController extends Controller
         return response()->json($result);
     }
 
-    public function show($id)
+    public function show($id,$doctor)
     {
-        $patient = $this->patientService->show($id);
+        $patient = $this->patientService->show($id,$doctor);
         return response()->json($patient);
     }
 
