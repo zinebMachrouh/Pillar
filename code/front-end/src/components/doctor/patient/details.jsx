@@ -25,7 +25,7 @@ const PatientDetails = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/patients/${patient.id}`, {
+            const response = await axios.get(`http://127.0.0.1:8000/api/patients/${patient.id}/${user.id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }
@@ -66,7 +66,7 @@ const PatientDetails = () => {
                     <NavLink to='/'><i className="fa-solid fa-heart-pulse"></i></NavLink>
                     <NavLink to='/doctor/requests'><i className="fa-solid fa-calendar-days"></i></NavLink>
                     <hr />
-                    <NavLink to='/'><i className="fa-solid fa-gear"></i></NavLink>
+                    <NavLink to='/resetPassword'><i className="fa-solid fa-gear"></i></NavLink>
                     <button className='logout' onClick={handleLogout}><i className="fa-solid fa-arrow-right-from-bracket"></i></button>
                 </nav>
             </div>

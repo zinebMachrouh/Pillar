@@ -285,6 +285,12 @@
   align-items: center;
   justify-content: space-between;
 }
+.desNav{
+  width: 65%;
+    display: flex;
+      align-items: center;
+      justify-content: space-between;
+}
 .text{
   color: var(--dark);
 }
@@ -767,6 +773,7 @@ margin-bottom: 5px;
 .cards{
     display: flex;
       flex-wrap: wrap;
+      gap: 30px;
       justify-content: space-between;
 }
 .card{
@@ -991,6 +998,7 @@ table{
   text-align: left;
   border-collapse: collapse;
   border-radius: 10px;
+  overflow: auto;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 table thead th{
@@ -1440,4 +1448,184 @@ form:has(.updateBtn){
   display: flex;
   align-items: center;
   gap: 5px;
+}
+.openNav{
+  color: var(--dark);
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 22px;
+  cursor: pointer;
+  display: none;
+}
+.sidenav {
+  height: 100vh;
+  width: 0;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+  background-color: var(--black);
+  overflow-x: hidden;
+  padding-top: 60px;
+  transition: 0.5s;
+}
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #fff !important;
+  display: block;
+  transition: 0.3s;
+}
+.sidenav a:hover {
+  color: var(--main) !important;
+}
+.sidenav nav{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  padding: 0px 25px;
+}
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  outline: none;
+}
+
+@media screen and (max-width:1500px){
+  .openNav{
+    display: block;
+  }
+  .hero header{
+    padding: 15px 40px;
+  }
+  .hero header .desNav{
+    display: none;
+  }
+  .hero{
+    height: fit-content;
+  }
+  .big-rect{
+    display: none;
+  }
+  .mini-rect{
+    display: none;
+  }
+  .heart{
+    display: none;
+  }
+  .hero-acts{
+    justify-content: center;
+  }
+  .hero .text{
+    width: 100%;
+    padding: 100px 40px;
+    text-align: center;
+  }
+  .hero .text h4{
+    font-size: 40px;
+    text-align: center;
+  }
+  .hero-acts a{
+    font-size: 14px;
+  }
+  .hero-acts .play a{
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+  .hero-acts .play span{
+    font-size: 14px;
+  }
+  .services{
+    padding: 50px 40px;
+    /* margin: 0px; */
+    position: relative;
+    height: 65vh;
+    overflow: auto;
+    z-index: 0;
+  }
+  .cards{
+    gap: 30px;
+    justify-content: center;
+  }
+  .w-main{
+    padding: 20px 40px;
+    margin-top: 40px;
+  }
+  .m-stat h4{
+    font-size: 24px;
+  }
+  .m-stat span{
+    font-size: 12px;
+  }
+  .m-right{
+    display: none;
+  }
+  .m-left p{
+    width: 85%;
+  }
+  .m-text{
+    margin-top: 40px;
+  }
+  footer{
+    padding: 20px 40px;
+    flex-wrap: wrap;
+    height: fit-content;
+  }
+  .list{
+    width: 40%;
+  }
+    .sidenav {
+      padding-top: 15px;
+    }
+  
+    .sidenav a {
+      font-size: 18px;
+    }
+
+    #login-body .form-container{
+      width: 440px;
+    }
+    #signup-body .form-container {
+      width: 440px;
+    }
+    #signup-body .form-container .input-group:first-child{
+      margin-top: 0px;
+    }
+    #signup-body .back{
+      top: 25px;
+      left: 25px;
+    }
+    .article{
+      flex-direction: column;
+      height: fit-content;
+      overflow-x: hidden;
+    }
+    .main{
+      width: 100%;
+    }
+    .header{
+      align-items: flex-start;
+      gap: 15px;
+      flex-direction: column;
+    }
+    .reminder{
+      height: fit-content;
+    }
+    .aside{
+      width: 100%;
+    }
+    .modal-content{
+      width: 430px;
+    }
 }

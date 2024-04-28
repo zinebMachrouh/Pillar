@@ -34,51 +34,55 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::post('/refresh', [AuthController::class, 'refresh']);
 
-Route::post('/doctors/create', [DoctorController::class, 'store']);
 
 // DOCTOR METHODS
-Route::put('/doctor/update/{id}', [DoctorController::class, 'update']);
+Route::middleware(['auth:api', 'role:doctor'])->group(function () {
+    Route::post('/doctors/create', [DoctorController::class, 'store']);
+    Route::put('/doctor/update/{id}', [DoctorController::class, 'update']);
 
 
-Route::get('/patients', [PatientController::class, 'index']);
-Route::post('/patient/store', [PatientController::class, 'store']);
-Route::get('/patients/{id}/{doctor}', [PatientController::class, 'show']);
-Route::post('/patients/search', [PatientController::class, 'search']);
-Route::post('/patients/attach', [PatientController::class, 'addByCin']);
+    Route::get('/patients', [PatientController::class, 'index']);
+    Route::post('/patient/store', [PatientController::class, 'store']);
+    Route::post('/patients/search', [PatientController::class, 'search']);
+    Route::post('/patients/attach', [PatientController::class, 'addByCin']);
 
-Route::post('/medications', [MedController::class, 'store']);
-Route::put('/medications/{id}', [MedController::class, 'update']);
-Route::delete('/medications/{id}', [MedController::class, 'destroy']);
-Route::get('/patients/{patientId}/meds', [MedController::class, 'getMeds']);
+    Route::post('/medications', [MedController::class, 'store']);
+    Route::put('/medications/{id}', [MedController::class, 'update']);
+    Route::delete('/medications/{id}', [MedController::class, 'destroy']);
+    Route::get('/patients/{patientId}/meds', [MedController::class, 'getMeds']);
 
-Route::post('/appointments', [AppointmentController::class, 'create']);
-Route::get('/appointments/{id}', [AppointmentController::class, 'find']);
-Route::put('/appointments/{id}', [AppointmentController::class, 'update']);
-Route::delete('/appointments/{id}', [AppointmentController::class, 'delete']);
-Route::patch('/appointments/{id}', [AppointmentController::class, 'modify']);
-Route::get('/appointments/upcoming', [AppointmentController::class, 'getUpcomingAppointments']);
-Route::get('/appointments/pending', [AppointmentController::class, 'getPending']);
+    Route::post('/appointments', [AppointmentController::class, 'create']);
+    Route::get('/appointments/{id}', [AppointmentController::class, 'find']);
+    Route::put('/appointments/{id}', [AppointmentController::class, 'update']);
+    Route::delete('/appointments/{id}', [AppointmentController::class, 'delete']);
+    Route::patch('/appointments/{id}', [AppointmentController::class, 'modify']);
+    Route::get('/appointments/upcoming', [AppointmentController::class, 'getUpcomingAppointments']);
+    Route::get('/appointments/pending', [AppointmentController::class, 'getPending']);
 
-Route::post('/checkups', [CheckupController::class, 'createCheckup']);
-Route::put('/checkups/{id}', [CheckupController::class, 'updateCheckup']);
-Route::delete('/checkups/{id}', [CheckupController::class, 'deleteCheckup']);
-Route::get('/checkups/appointment/{appointmentId}', [CheckupController::class, 'findCheckupByAppointment']);
+    Route::post('/checkups', [CheckupController::class, 'createCheckup']);
+    Route::put('/checkups/{id}', [CheckupController::class, 'updateCheckup']);
+    Route::delete('/checkups/{id}', [CheckupController::class, 'deleteCheckup']);
+    Route::get('/checkups/appointment/{appointmentId}', [CheckupController::class, 'findCheckupByAppointment']);
+});
 
 // ADMIN METHODS
-
-Route::get('/admin/index', [AdminController::class, 'index']);
-Route::delete('/banpatient/{patient_id}', [AdminController::class, 'banPatient']);
-Route::delete('/bandoctor/{doctor_id}', [AdminController::class, 'banDoctor']);
-Route::get('/restorepatient/{patient_id}', [AdminController::class, 'restorePatient']);
-Route::get('/restoredoctor/{doctor_id}', [AdminController::class, 'restoreDoctor']);
-Route::get('/viewstatistics', [AdminController::class, 'viewStatistics']);
-
+Route::middleware(['auth:api', 'role:admin'])->group(function () {
+    Route::get('/admin/index', [AdminController::class, 'index']);
+    Route::delete('/banpatient/{patient_id}', [AdminController::class, 'banPatient']);
+    Route::delete('/bandoctor/{doctor_id}', [AdminController::class, 'banDoctor']);
+    Route::get('/restorepatient/{patient_id}', [AdminController::class, 'restorePatient']);
+    Route::get('/restoredoctor/{doctor_id}', [AdminController::class, 'restoreDoctor']);
+    Route::get('/viewstatistics', [AdminController::class, 'viewStatistics']);
+});    
 // PATIENT METHODS
+Route::middleware(['auth:api', 'role:patient'])->group(function () {
+    Route::get('/patient', [PatientController::class, 'getData']);
+    Route::post('/appointment/create', [AppointmentController::class, 'store']);
+    Route::post('/doctors/search', [DoctorController::class, 'search']);
+    Route::put('/patient/update/{id}', [PatientController::class, 'update']);
+});
 
-Route::get('/patient', [PatientController::class, 'getData']);
-Route::post('/appointment/create', [AppointmentController::class, 'store']);
-Route::post('/doctors/search', [DoctorController::class, 'search']);
-Route::put('/patient/update/{id}', [PatientController::class, 'update']);
+Route::get('/patients/{id}/{doctor}', [PatientController::class, 'show']);
 Route::post('/generatecode', [VerificationCodeController::class, 'generateCode']);
 Route::post('/verifycode', [VerificationCodeController::class, 'verifyCode']);
 Route::put('/resetpassword', [VerificationCodeController::class, 'resetPassword']);

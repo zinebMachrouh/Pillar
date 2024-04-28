@@ -136,7 +136,7 @@ const AdminDashboard = () => {
                     <NavLink to='/'><i className="fa-solid fa-heart-pulse"></i></NavLink>
                     <NavLink to='/'><i className="fa-solid fa-chart-pie"></i></NavLink>
                     <hr />
-                    <NavLink to='/'><i className="fa-solid fa-gear"></i></NavLink>
+                    <NavLink to='/resetPassword'><i className="fa-solid fa-gear"></i></NavLink>
                     <button className='logout' onClick={handleLogout}><i className="fa-solid fa-arrow-right-from-bracket"></i></button>
                 </nav>
             </div>

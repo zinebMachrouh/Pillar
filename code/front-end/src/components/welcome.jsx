@@ -1,6 +1,15 @@
+import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 
 const Welcome = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const openNav = () => {
+        setIsOpen(true);
+    };
+
+    const closeNav = () => {
+        setIsOpen(false);
+    };
     const logged = sessionStorage.getItem('logged');
     const redirect = sessionStorage.getItem('redirect');
     return (
@@ -8,23 +17,47 @@ const Welcome = () => {
             <div className="hero">
                 <header>
                     <h2>Pillar</h2>
-                    <nav>
-                        <NavLink to="/" end>Home</NavLink>
-                        <a href="#">Services</a>
-                        <a href="#">Blog</a>
-                        <a href="#">About</a>
-                        <a href="#">Contact Us</a>
-                    </nav>
-                    {logged ? (
-                        <div>
-                            <NavLink to={`/${redirect}`}>Dashboard</NavLink>
-                        </div>
-                    ) : (
-                        <div>
-                            <NavLink to='/signup'>SignUp</NavLink>
-                            <NavLink to='/login'>LogIn</NavLink>
-                        </div>
-                    )}
+                    <div className="desNav">
+                        <nav>
+                            <NavLink to="/" end>Home</NavLink>
+                            <a href="#">Services</a>
+                            <a href="#">Blog</a>
+                            <a href="#">About</a>
+                            <a href="#">Contact Us</a>
+                        </nav>
+                        {logged ? (
+                            <div>
+                                <NavLink to={`/${redirect}`}>Dashboard</NavLink>
+                            </div>
+                        ) : (
+                            <div>
+                                <NavLink to='/signup'>SignUp</NavLink>
+                                <NavLink to='/login'>LogIn</NavLink>
+                            </div>
+                        )}
+                    </div>
+                    <button type="button" className="openNav" onClick={openNav}><i class="fa-solid fa-bars-staggered"></i></button>
+                    <div id="mySidenav" class="sidenav" style={{ width: isOpen ? '100%' : '0' }}>
+                        <button type="button" class="closebtn" onClick={closeNav}>&times;</button>
+                        <nav>
+                            <NavLink to="/" end>Home</NavLink>
+                            <a href="#">Services</a>
+                            <a href="#">Blog</a>
+                            <a href="#">About</a>
+                            <a href="#">Contact Us</a>
+
+                            {logged ? (
+                                <>
+                                    <NavLink to={`/${redirect}`}>Dashboard</NavLink>
+                                </>
+                            ) : (
+                                <>
+                                    <NavLink to='/signup'>SignUp</NavLink>
+                                    <NavLink to='/login'>LogIn</NavLink>
+                                </>
+                            )}
+                        </nav>
+                    </div>
                 </header>
                 <div className="big-rect"></div>
                 <div className="mini-rect"></div>
@@ -115,42 +148,41 @@ const Welcome = () => {
                 </div>
             </div>
             <footer class="footer">
-                    <div class="list">
-                        <h4>Quick Links</h4>
-                        <ul>
-                            <li><a href="#">Terms & Conditions</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Help</a></li>
-                        </ul>
-                    </div>
+                <div class="list">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Help</a></li>
+                    </ul>
+                </div>
 
-                    <div class="list">
-                        <h4>Support</h4>
-                        <ul>
-                            <li><a href="#">Terms & Conditions</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Help</a></li>
-                        </ul>
-                    </div>
+                <div class="list">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Help</a></li>
+                    </ul>
+                </div>
 
-                    <div class="list">
-                        <h4>Contact Info</h4>
-                        <ul>
-                            <li><a href="#">98 West 21th Street</a></li>
-                            <li><a href="#">info@pillar.com</a></li>
-                            <li><a href="#">+(123)-123-1234</a></li>
-                        </ul>
-                    </div>
+                <div class="list">
+                    <h4>Contact Info</h4>
+                    <ul>
+                        <li><a href="#">98 West 21th Street</a></li>
+                        <li><a href="#">info@pillar.com</a></li>
+                        <li><a href="#">+(123)-123-1234</a></li>
+                    </ul>
+                </div>
 
-                    <div class="list">
-                        <h4>Connect</h4>
-                        <div class="social">
-                            <a href="#"><i class='bx bxl-facebook' ></i></a>
-                            <a href="#"><i class='bx bxl-instagram-alt' ></i></a>
-                            <a href="#"><i class='bx bxl-twitter' ></i></a>
-                            <a href="#"><i class='bx bxl-linkedin' ></i></a>
-                        </div>
+                <div class="list">
+                    <h4>Connect</h4>
+                    <div class="social">
+                        <a href="#"><i class='bx bxl-facebook' ></i></a>
+                        <a href="#"><i class='bx bxl-instagram-alt' ></i></a>
+                        <a href="#"><i class='bx bxl-twitter' ></i></a>
                     </div>
+                </div>
             </footer>
         </section>
     );

@@ -163,6 +163,10 @@ const DoctorIndex = () => {
         window.location.reload();
     };
 
+    const resetPassword = async () => {
+        navigate('/resetPassword', { state: { email: state.user.user.email } });
+    }
+
     return (
         <div className="dashboard">
             <div className="sidebar">
@@ -175,7 +179,7 @@ const DoctorIndex = () => {
                     <button type="button" onClick={showModal}><i class="fa-solid fa-user-plus"></i></button>
                     <NavLink to='/doctor/requests'><i className="fa-solid fa-calendar-days"></i></NavLink>
                     <hr />
-                    <NavLink to='/'><i className="fa-solid fa-gear"></i></NavLink>
+                    <button type="button" onClick={resetPassword}><i className="fa-solid fa-gear"></i></button>
                     <button className='logout' onClick={handleLogout}><i className="fa-solid fa-arrow-right-from-bracket"></i></button>
                 </nav>
             </div>
