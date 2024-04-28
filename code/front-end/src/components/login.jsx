@@ -8,6 +8,7 @@ const Login = () => {
         email: '',
         password: ''
     });
+    const [message,setMesssage] = useState('');
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -24,19 +25,22 @@ const Login = () => {
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
         const csrfToken = window.csrfToken;
-        const response = await axios.post('http://127.0.0.1:8000/api/login', loginData, {
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            }
-        });
-        const token = response.data.authorisation.token;
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/api/login', loginData, {
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+            const token = response.data.authorisation.token;
+            const redirect = response.data.redirect;
+            sessionStorage.setItem('token', token);
+            sessionStorage.setItem('logged', true);
+            sessionStorage.setItem('redirect', redirect);
 
-        const redirect = response.data.redirect;
-        sessionStorage.setItem('token', token);
-        sessionStorage.setItem('logged', true);
-        sessionStorage.setItem('redirect', redirect);
-
-        navigate(`/${redirect}`);
+            navigate(`/${redirect}`);
+        } catch ($e) {
+            setMesssage('Invalid credentials');
+        }
 
     };
 
@@ -50,13 +54,20 @@ const Login = () => {
                 <form class="form" method="POST" onSubmit={handleLoginSubmit}>
                     <div class="input-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" id="email" placeholder="Enter Email" value={loginData.email} onChange={handleInputChange} />
+                        <input type="email" name="email" id="email" placeholder="example@example.com" value={loginData.email} onChange={handleInputChange} />
                     </div>
                     <div class="input-group">
                         <label for="password">Password</label>
-                        <input type="password" name="password" id="password" placeholder="Enter Password" value={loginData.password} onChange={handleInputChange} />
+                        <input type="password" name="password" id="password" placeholder="Min : 8 characters" value={loginData.password} onChange={handleInputChange} />
 
                     </div>
+                    <p className="message">
+                        {(message) ? 
+                            <div>
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                <span>{message}</span>
+                        </div> : ''}
+                    </p>
                     <div class="group">
                         <label for="remember_me" class="remember">
                             <input id="remember_me" type="checkbox" name="remember" />
@@ -64,9 +75,9 @@ const Login = () => {
                         </label>
 
                         <div class="forgot">
-                            <a href="#">
+                            <Link to='/resetPassword'>
                                 Forgot your password?
-                            </a>
+                            </Link>
                         </div>
                     </div>
 

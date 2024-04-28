@@ -29,7 +29,7 @@ class AdminRepository implements AdminRepositoryInterface
 			$patient->delete();
 			return ['status' => 'success', 'message' => 'Patient banned successfully'];
 		} catch (\Exception $e) {
-			return ['status' => 'error', 'message' => $e->getMessage()];
+			return ['status' => 'error', 'message' => 'Could not ban patient'];
 		}
 	}
 
@@ -40,7 +40,7 @@ class AdminRepository implements AdminRepositoryInterface
 			$patient->restore();
 			return ['status' => 'success', 'message' => 'Patient restored successfully'];
 		} catch (\Exception $e) {
-			return ['status' => 'error', 'message' => $e->getMessage()];
+			return ['status' => 'error', 'message' => 'Could not restore patient'];
 		}
 	}
 
@@ -51,7 +51,7 @@ class AdminRepository implements AdminRepositoryInterface
 			$doctor->delete();
 			return ['status' => 'success', 'message' => 'Doctor banned successfully'];
 		} catch (\Exception $e) {
-			return ['status' => 'error', 'message' => $e->getMessage()];
+			return ['status' => 'error', 'message' => 'Could not ban doctor'];
 		}
 	}
 
@@ -62,7 +62,7 @@ class AdminRepository implements AdminRepositoryInterface
 			$doctor->restore();
 			return ['status' => 'success', 'message' => 'Doctor restored successfully'];
 		} catch (\Exception $e) {
-			return ['status' => 'error', 'message' => $e->getMessage()];
+			return ['status' => 'error', 'message' => 'Could not restore doctor'];
 		}
 	}
 

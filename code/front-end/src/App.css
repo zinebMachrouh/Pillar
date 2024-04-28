@@ -544,7 +544,7 @@ margin-bottom: 5px;
   border-radius: 10px;
   width: 35%;
   padding: 10px 20px;
-  height: 55%;
+  height: fit-content;
 }
 .close {
   font-size: 24px;
@@ -1424,4 +1424,20 @@ form:has(.updateBtn){
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+.btn{
+  background-color: var(--main);
+  color: var(--white);
+  padding: 10px 30px;
+  border: none;
+  border-radius: 7px;
+  font-size: 16px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+.message div{
+  color: #f14e4e;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }

@@ -6,7 +6,7 @@ import PatientAside from "./aside";
 import Appointment from "./appointment";
 import PatientInfo from "./info";
 import MedPatient from "./med";
-import DoctorInfo from "../doctor/info";
+import DoctorInfo from "./docInfo";
 
 const DoctorDetails = () => {
     const navigate = useNavigate()
@@ -48,9 +48,6 @@ const DoctorDetails = () => {
         fetchData()
     }, [])
 
-    const handleNavigate = () => {
-        navigate('/modify/user', { state: { user: state.patient } })
-    }
 
     return (
         <div className="dashboard">

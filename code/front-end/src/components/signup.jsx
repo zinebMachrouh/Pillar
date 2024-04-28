@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { set } from "lodash";
 
 const SignUp = () => {
     const [registerData, setRegisterData] = useState({
@@ -11,7 +12,8 @@ const SignUp = () => {
         password: '',
         phone_number: ''
     });
-    
+    const [message, setMessage] = useState('');
+
     const navigate = useNavigate();
     useEffect(() => {
         const token = sessionStorage.getItem('token');
@@ -25,19 +27,23 @@ const SignUp = () => {
     };
 
     const handleRegistrationSubmit = async (e) => {
-        e.preventDefault();
-        const csrfToken = window.csrfToken;
-        const response = await axios.post('http://127.0.0.1:8000/api/register', registerData, {
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            }
-        });
-        const token  = response.data.authorisation.token;
-        const redirect = response.data.redirect;
-        sessionStorage.setItem('token', token);
-        sessionStorage.setItem('redirect', redirect);
+        try {
+            e.preventDefault();
+            const csrfToken = window.csrfToken;
+            const response = await axios.post('http://127.0.0.1:8000/api/register', registerData, {
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+            const token = response.data.authorisation.token;
+            const redirect = response.data.redirect;
+            sessionStorage.setItem('token', token);
+            sessionStorage.setItem('redirect', redirect);
 
-        navigate(`/${redirect}`);
+            navigate(`/${redirect}`);
+        } catch (error) {
+            setMessage('Invalid credentials');
+        }
     };
 
     return (
@@ -50,25 +56,31 @@ const SignUp = () => {
                 <form className="form" method="POST" onSubmit={handleRegistrationSubmit} >
                     <div className="input-group">
                         <label htmlFor="name">Full Name</label>
-                        <input type="text" name="name" id="name" value={registerData.name} onChange={handleInputChange} placeholder="Enter Full Name" />
+                        <input type="text" name="name" id="name" value={registerData.name} onChange={handleInputChange} placeholder="Zineb Mac" />
                     </div>
                     <div className="input-group">
                         <label htmlFor="email">Email</label>
-                        <input type="email" name="email" id="email" value={registerData.email} onChange={handleInputChange} placeholder="Enter Email" />
+                        <input type="email" name="email" id="email" value={registerData.email} onChange={handleInputChange} placeholder="example@example.com" />
                     </div>
                     <div className="input-group">
                         <label htmlFor="cin">Cin</label>
-                        <input type="text" name="cin" id="cin" value={registerData.cin} onChange={handleInputChange} placeholder="Enter Cin" />
+                        <input type="text" name="cin" id="cin" value={registerData.cin} onChange={handleInputChange} placeholder="AF16587" />
                     </div>
                     <div className="input-group">
                         <label htmlFor="password">Password</label>
-                        <input type="password" name="password" id="password" value={registerData.password} onChange={handleInputChange} placeholder="Enter Password" />
+                        <input type="password" name="password" id="password" value={registerData.password} onChange={handleInputChange} placeholder="Min : 8 characters" />
                     </div>
                     <div className="input-group">
                         <label htmlFor="phone_number">Phone Number</label>
-                        <input type="tel" name="phone_number" id="phone_number" value={registerData.phone_number} onChange={handleInputChange} placeholder="Enter Phone Number" />
+                        <input type="tel" name="phone_number" id="phone_number" value={registerData.phone_number} onChange={handleInputChange} placeholder="711223344" />
                     </div>
-
+                    <p className="message">
+                        {(message) ?
+                            <div>
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                <span>{message}</span>
+                            </div> : ''}
+                    </p>
                     <button className="sign" type='submit'>Register</button>
                 </form>
 

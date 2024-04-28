@@ -3,7 +3,7 @@ import Patient from "../patient";
 import Stats from "../stats";
 import { MyContext } from '../index';
 const Main = () => {
-    const { patients, checkups, appointments, user } = useContext(MyContext);
+    const { patients, user } = useContext(MyContext);
     return (  
         <section>
             <div className="statistics">

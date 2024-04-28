@@ -69,8 +69,7 @@ const AdminDashboard = () => {
             fetchData();
             fetchStats();
         } catch (error) {
-            console.error('Error banning patient:', error);
-            return { status: 'error', message: 'An error occurred while banning the patient.' };
+            alert('Error banning patient');
         }
     };
 
@@ -84,8 +83,7 @@ const AdminDashboard = () => {
             fetchData();
             fetchStats();
         } catch (error) {
-            console.error('Error banning doctor:', error);
-            return { status: 'error', message: 'An error occurred while banning the doctor.' };
+            alert('Error banning doctor');
         }
     };
 
@@ -99,8 +97,7 @@ const AdminDashboard = () => {
             fetchData();
             fetchStats();
         } catch (error) {
-            console.error('Error restoring patient:', error);
-            return { status: 'error', message: 'An error occurred while restoring the patient.' };
+            alert('Error restoring patient');
         }
     };
 
@@ -114,8 +111,7 @@ const AdminDashboard = () => {
             fetchData();
             fetchStats();
         } catch (error) {
-            console.error('Error restoring doctor:', error);
-            return { status: 'error', message: 'An error occurred while restoring the doctor.' };
+            alert('Error restoring doctor');
         }
     };
     const navigate = useNavigate();

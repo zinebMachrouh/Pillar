@@ -48,7 +48,7 @@ const PatientDetails = () => {
             });
             fetchData();
         } catch (error) {
-            console.error('Error deleting appointment:', error);
+            alert('Error deleting appointment:');
         }
     }
     useEffect(() => {

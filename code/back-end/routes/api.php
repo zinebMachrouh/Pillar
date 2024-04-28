@@ -81,3 +81,4 @@ Route::post('/doctors/search', [DoctorController::class, 'search']);
 Route::put('/patient/update/{id}', [PatientController::class, 'update']);
 Route::post('/generatecode', [VerificationCodeController::class, 'generateCode']);
 Route::post('/verifycode', [VerificationCodeController::class, 'verifyCode']);
+Route::put('/resetpassword', [VerificationCodeController::class, 'resetPassword']);

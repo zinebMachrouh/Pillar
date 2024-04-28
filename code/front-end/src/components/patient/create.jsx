@@ -8,6 +8,8 @@ const CreateAppointment = ({ doctors, closeModal, appointment }) => {
         date: '',
         notes: ''
     })
+
+    const [message, setMessage] = useState('');
     const [tomorrow, setTomorrow] = useState('');
 
     useEffect(() => {
@@ -39,21 +41,32 @@ const CreateAppointment = ({ doctors, closeModal, appointment }) => {
         const token = sessionStorage.getItem('token');
 
         if (appointment) {
-            await axios.put(`http://127.0.0.1:8000/api/appointments/${appointment.id}`, formData, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                }
-            });
+            try {
+                await axios.put(`http://127.0.0.1:8000/api/appointments/${appointment.id}`, formData, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+                navigate('/patient/requests');
+                closeModal();
+            } catch (error) {
+                setMessage('Date And Time Already Taken')
+            }
         }
         else {
-            await axios.post('http://127.0.0.1:8000/api/appointment/create', formData, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                }
-            });
+            try {
+                await axios.post('http://127.0.0.1:8000/api/appointment/create', formData, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+                navigate('/patient/requests');
+                closeModal();
+            } catch (error) {
+                setMessage('Date And Time Already Taken')
+            }
         }
-        navigate('/patient/requests');
-        closeModal();
+        
     };
 
     return (
@@ -69,6 +82,8 @@ const CreateAppointment = ({ doctors, closeModal, appointment }) => {
                             <label htmlFor="doctor_id">Doctors</label>
                             <select name="doctor_id" id="doctor_id" onChange={handleChange} >
                                 <option value="" hidden>Select doctor</option>
+                                {doctors.length === 0 && <option disabled>No doctors available</option>}
+                                {(appointment)? <option value={appointment.doctor_id} selected hidden>{appointment.doctor.user.name}</option> : ''}
                                 {doctors.map((doctor) => (
                                     <option key={doctor.id} value={doctor.id}>{doctor.user.name}</option>
                                 ))}
@@ -78,6 +93,13 @@ const CreateAppointment = ({ doctors, closeModal, appointment }) => {
                             <label htmlFor="date">Date</label>
                             <input type="datetime-local" name="date" id="date" value={formData.date} onChange={handleChange} min={tomorrow} />
                         </div>
+                        <p className="message">
+                            {(message) ?
+                                <div>
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    <span>{message}</span>
+                                </div> : ''}
+                        </p>
                         <div className="input-group">
                             <label htmlFor="notes">Notes</label>
                             <textarea name="notes" id="notes" rows="6" value={formData.notes} onChange={handleChange}></textarea>

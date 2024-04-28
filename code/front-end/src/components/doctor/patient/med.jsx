@@ -20,12 +20,16 @@ const Med = ({ med, patient_id }) => {
 
     const handleDelete = async () => {
         const token = sessionStorage.getItem('token');
-        await axios.delete(`http://127.0.0.1:8000/api/medications/${med.id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        });
-        navigate('/doctor');
+        try {
+            await axios.delete(`http://127.0.0.1:8000/api/medications/${med.id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            navigate('/doctor');
+        } catch (error) {
+            alert('Error deleting medication')
+        }
 
     }
     return (

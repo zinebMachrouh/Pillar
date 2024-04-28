@@ -15,6 +15,15 @@ const Checkup = () => {
     });
     
     const navigate = useNavigate();
+    const [tomorrow, setTomorrow] = useState('');
+
+    useEffect(() => {
+        const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() + 1);
+        currentDate.setHours(7, 0, 0, 0);
+        const isoDateTime = currentDate.toISOString().slice(0, 16);
+        setTomorrow(isoDateTime);
+    }, []);
     useEffect(() => {
         if (checkup) {
             setFormData({
@@ -102,6 +111,7 @@ const Checkup = () => {
                             id="follow_up_date"
                             value={formData.follow_up_date}
                             onChange={handleChange}
+                            min={tomorrow}
                         />
                     </div>
                     <div className="input-group">

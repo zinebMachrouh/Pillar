@@ -3,27 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendVerificationCode;
+use App\Models\User;
 use App\Models\VerificationCode;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class VerificationCodeController extends Controller
 {
-    public function generateCode()
+    public function generateCode(Request $request)
     {
-        $user = Auth::user();
+        $data = $request->validate([
+            'email' => 'required|email',
+        ]);
+        $user = User::where('email', $data['email'])->first();
         $code = $this->generateUniqueCode();
 
-        $verificationCode = VerificationCode::create([
+        VerificationCode::create([
             'user_id' => $user->id,
             'code' => $code,
             'expires_at' => Carbon::now()->addMinutes(30),  
         ]);
 
         Mail::to($user->email)->send(new SendVerificationCode($code, $user->name));
-        return $verificationCode;
+        return response()->json(['message' => 'Verification code sent successfully.'], 200);
     }
 
     private function generateUniqueCode()
@@ -33,12 +38,13 @@ class VerificationCodeController extends Controller
 
     public function verifyCode(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'code' => 'required|string',
+            'email' => 'required|email',
         ]);
 
-        $user = Auth::user(); 
-        $code = $request->input('code');
+        $user = User::where('email', $data['email'])->first(); 
+        $code = $request['code'];
 
         $verificationCode = VerificationCode::where('user_id', $user->id)
             ->where('code', $code)
@@ -56,5 +62,18 @@ class VerificationCodeController extends Controller
         $verificationCode->save();
 
         return response()->json(['message' => 'Verification successful.'], 200);
+    }
+    public function resetPassword(Request $request)
+    {
+        $data = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:8',
+        ]);
+
+        $user = User::where('email', $data['email'])->first();
+        $user->password = Hash::make($data['password']);
+        $user->save();
+
+        return response()->json(['message' => 'Password reset successfully.'], 200);
     }
 }

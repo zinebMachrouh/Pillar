@@ -42,7 +42,7 @@ const DoctorIndex = () => {
             if (error.response && error.response.status === 500) {
                 navigate('/login');
             } else {
-                console.error('Error fetching patients:', error);
+                console.error('Error fetching patients:');
             }
         }
     };
@@ -56,16 +56,20 @@ const DoctorIndex = () => {
             });
             fetchData();
         } catch (error) {
-            console.error('Error deleting appointment:', error);
+            alert('Error deleting appointment:');
         }
     }
     const handleApprove = async (id) => {
-        const response = await axios.patch(`http://127.0.0.1:8000/api/appointments/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
-        fetchData()
+        try {
+            const response = await axios.patch(`http://127.0.0.1:8000/api/appointments/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            })
+            fetchData()
+        } catch (error) {
+            alert('Error approving appointment:');
+        }
     }
 
     const handleSearch = async () => {
@@ -202,8 +206,8 @@ const DoctorIndex = () => {
                 </div>
                 <Aside appointments={state.appointments} patients={state.patients} openModal={openModal} handleDelete={handleDelete} />
             </div>
-            {state.showModal && <CreateModal patients={state.patients} closeModal={closeModal} />}
-            {state.openModal && <AddPatient closeModal={shutModal} />}
+            {state.showModal && <CreateModal patients={state.patients} closeModal={closeModal} fetchData={fetchData}/>}
+            {state.openModal && <AddPatient closeModal={shutModal} fetchData={fetchData}/>}
         </div>
     );
 }
