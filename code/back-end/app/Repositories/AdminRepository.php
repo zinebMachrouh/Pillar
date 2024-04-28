@@ -14,9 +14,13 @@ class AdminRepository implements AdminRepositoryInterface
 	{
 		try {
 			$user = Auth::user();
-			$patients = User::where('role_id', 3)->withTrashed()->with('patient')->get();
-			$doctors = User::where('role_id', 2)->withTrashed()->with('doctor')->get();
-			return ['status' => 'success', 'patients' => $patients, 'doctors' => $doctors, 'user' => $user];
+			$patients = User::where('role_id', 3)->with('patient')->with(['patient' => function ($query) {
+				$query->withTrashed();
+			}])->withTrashed()->get();
+
+			$doctors = User::where('role_id', 2)->with('doctor')->with(['doctor' => function ($query) {
+				$query->withTrashed();
+			}])->withTrashed()->get();			return ['status' => 'success', 'patients' => $patients, 'doctors' => $doctors, 'user' => $user];
 		} catch (\Exception $e) {
 			return ['status' => 'error', 'message' => $e->getMessage()];
 		}
@@ -25,8 +29,9 @@ class AdminRepository implements AdminRepositoryInterface
 	public function banPatient($patientId)
 	{
 		try {
-			$patient = User::findOrFail($patientId);
-			$patient->delete();
+			$user = User::findOrFail($patientId);
+			$user->patient()->delete();
+			$user->delete();
 			return ['status' => 'success', 'message' => 'Patient banned successfully'];
 		} catch (\Exception $e) {
 			return ['status' => 'error', 'message' => 'Could not ban patient'];
@@ -37,6 +42,7 @@ class AdminRepository implements AdminRepositoryInterface
 	{
 		try {
 			$patient = User::onlyTrashed()->findOrFail($patientId);
+			$patient->patient()->restore();
 			$patient->restore();
 			return ['status' => 'success', 'message' => 'Patient restored successfully'];
 		} catch (\Exception $e) {
@@ -47,8 +53,9 @@ class AdminRepository implements AdminRepositoryInterface
 	public function banDoctor($doctorId)
 	{
 		try {
-			$doctor = User::findOrFail($doctorId);
-			$doctor->delete();
+			$user = User::findOrFail($doctorId);
+			$user->delete();
+			$user->doctor()->delete();
 			return ['status' => 'success', 'message' => 'Doctor banned successfully'];
 		} catch (\Exception $e) {
 			return ['status' => 'error', 'message' => 'Could not ban doctor'];
@@ -59,6 +66,7 @@ class AdminRepository implements AdminRepositoryInterface
 	{
 		try {
 			$doctor = User::onlyTrashed()->findOrFail($doctorId);
+			$doctor->doctor()->restore();
 			$doctor->restore();
 			return ['status' => 'success', 'message' => 'Doctor restored successfully'];
 		} catch (\Exception $e) {
