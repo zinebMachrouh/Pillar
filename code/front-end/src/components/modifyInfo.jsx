@@ -85,6 +85,7 @@ const ModifyInfo = () => {
                 'Authorization': `Bearer ${token}`,
             }
         });
+        sessionStorage.setItem('name', userData.name);
         navigate(`/${sessionStorage.getItem('redirect')}`);
     };
 

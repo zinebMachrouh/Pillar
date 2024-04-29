@@ -22,11 +22,39 @@ class PatientRepository implements PatientRepositoryInterface
 		$doctor = $user->doctor->load('user');
 		$doctor->user->makeHidden('password');
 
-		$patients = $doctor->patients()->latest('updated_at')->with('user')->get();
-		$appointments = $doctor->appointments()->with('patient.user', 'checkup')->latest('updated_at')->where('status', '!=', 0)->get();
-		$pending = $doctor->appointments()->with('patient.user')->latest('updated_at')->where('status', 0)->get();
+		$patients = $doctor->patients()
+			->whereHas('user', function ($query) {
+				$query->whereNull('deleted_at');
+			})
+			->latest('updated_at')
+			->with('user')
+			->get();
 
-		$checkups = $doctor->checkups()->latest('updated_at')->get();
+		$appointments = $doctor->appointments()
+			->whereHas('patient.user', function ($query) {
+				$query->whereNull('deleted_at');
+			})
+			->with(['patient.user', 'checkup'])
+			->where('status', '!=', 0)
+			->latest('updated_at')
+			->get();
+
+		$pending = $doctor->appointments()
+			->whereHas('patient.user', function ($query) {
+				$query->whereNull('deleted_at');
+			})
+			->with('patient.user')
+			->where('status', 0)
+			->latest('updated_at')
+			->get();
+
+		$checkups = $doctor->checkups()
+		->whereHas('patient.user', function ($query) {
+			$query->whereNull('deleted_at');
+		})
+		->latest('updated_at')
+		->get();
+
 		$statistics = [
 			'Patients' => $doctor->patients()->count(),
 			'Appoinments' => $doctor->appointments()->where('status', '!=', 0)->count(),
@@ -67,7 +95,7 @@ class PatientRepository implements PatientRepositoryInterface
 		return ['status' => 'success', 'message' => 'Patient created successfully', 'patient' => $patient];
 	}
 
-	public function show($id,$doctor)
+	public function show($id, $doctor)
 	{
 		$patient = Patient::findOrFail($id);
 		$medications = $patient->meds()

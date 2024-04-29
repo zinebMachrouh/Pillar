@@ -155,7 +155,10 @@ const AdminDashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="reminder"></div>
+                    <div className="reminder" style={{height:'200px',color:'#fff',padding:'0px 70px',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+                        <h2>“Wellness is the complete integration of body, mind, and spirit – the realization that everything we do, think, feel, and believe has an effect on our state of well-being.”</h2>
+                        <h4 style={{alignSelf:'flex-end',marginTop:'20px',paddingRight:'35px'}}>– Greg Anderson</h4>
+                    </div>
                     <div className="statistics">
                         <h2>All Doctors</h2>
                         <div className="stats">
